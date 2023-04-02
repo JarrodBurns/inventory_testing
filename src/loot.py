@@ -50,3 +50,6 @@ LOOT_TABLES = {
         ]
     )
 }
+
+if __name__ == '__main__':
+    pass
