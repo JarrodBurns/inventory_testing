@@ -12,26 +12,36 @@ from tag import Tag
 
 
 class ItemName(str, Enum):
-    BRASS_BUTTON        = "Button"
-    DULL_TOOTH          = "Dull Tooth"
-    FLINT               = "Flint"
-    PENCIL              = "Pencil"
-    INKWELL             = "Inkwell"
-    PLIERS              = "Pliers"
-    HAMMER              = "Hammer"
-    SAW                 = "Saw"
-    MEASURING_STICK     = "Measuring Stick"
-    TOOLBOX             = "Toolbox"
-    TRASH               = "Trash"
-    NAIL                = "Nail"
-    RUSTY_NAIL          = "Rusty Nail"
-    BOTTLE_CAP          = "Bottle Cap"
+    _DEV_FILLER         = "_DEV_FILLER"
 
-    GOBLET_OF_BRASS     = "Goblet of Brass"
-    SILVER_TOOTH_PICK   = "Silver Tooth Pick"
-    JADE_EARRING        = "Jade Earring"
-    COPPER_KETTLE       = "Copper Kettle"
+    BRASS_BUTTON        = "Button"
+    FLINT               = "Flint"
+    HAMMER              = "Hammer"
+    MEASURING_STICK     = "Measuring Stick"
+    NAIL                = "Nail"
+    PLIERS              = "Pliers"
+    SAW                 = "Saw"
+    SMOKED_FISH         = "Smoked Fish"
+    SPIDER_SILK_ROPE    = "Spider Silk Rope"
+    TOOLBOX             = "Toolbox"
+
+    # Junk
+    BOTTLE_CAP          = "Bottle Cap"
+    DULL_TOOTH          = "Dull Tooth"
+    INKWELL             = "Inkwell"
+    PENCIL              = "Pencil"
+    RUSTY_NAIL          = "Rusty Nail"
+    TOXIC_MUSHROOM      = "Toxic Mushroom"
+    TRASH               = "Trash"
+    WOVEN_BASKET        = "Woven Basket"
+
+    # Treasure
     BRONZE_MIRROR       = "Bronze Mirror"
+    COPPER_KETTLE       = "Copper Kettle"
+    GOBLET_OF_BRASS     = "Goblet of Brass"
+    JADE_EARRING        = "Jade Earring"
+    RUNED_STONE         = "Runed Stone"
+    SILVER_TOOTH_PICK   = "Silver Tooth Pick"
 
 
 @dataclass
@@ -110,6 +120,17 @@ class Item:
 
 
 ITEMS = {
+    ItemName._DEV_FILLER         : Item(
+        name=ItemName._DEV_FILLER,
+        weight=1,
+        value=5,
+        description="Send it straight to the dev/null!",
+        tags=[],
+        quality=Quality.LEGENDARY,
+        composition=[],
+        craftable=False,
+        flavor_text="0010"
+    ),
     ItemName.BOTTLE_CAP         : Item(
         name=ItemName.BOTTLE_CAP,
         weight=2,
@@ -295,7 +316,7 @@ ITEMS = {
         description="A single jade earring, probably worn as an accessory.",
         tags=[Tag.JEWELRY, Tag.ACCESSORY, Tag.TREASURE],
         quality=Quality.UNCOMMON,
-        composition=[MATERIALS[MaterialType.JADE]],
+        composition=[MATERIALS[m] for m in [MaterialType.JADE, MaterialType.BRONZE]],
         craftable=True,
         flavor_text="This earring may have once belonged to a goblin of high status, or perhaps it was stolen from a human traveler."
     ),
@@ -321,6 +342,63 @@ ITEMS = {
         craftable=True,
         flavor_text="This mirror may have been stolen from a human's vanity, or perhaps it was a treasured possession of a particularly vain goblin."
     ),
+
+    # Unsorted... TODO: Make a script to alphabetize these things.
+    ItemName.WOVEN_BASKET: Item(
+        name=ItemName.WOVEN_BASKET,
+        weight=20,
+        value=1_200,
+        description="A handcrafted basket made from woven reeds, perfect for carrying small items or as a decorative piece.",
+        tags=[Tag.DECORATION, Tag.JUNK],
+        quality=Quality.COMMON,
+        composition=[MATERIALS[MaterialType.FIBER]],
+        craftable=True,
+        flavor_text="The intricate weaving of this basket shows the skilled craftsmanship of the one who made it."
+    ),
+    ItemName.SPIDER_SILK_ROPE: Item(
+        name=ItemName.SPIDER_SILK_ROPE,
+        weight=4,
+        value=7_500,
+        description="A sturdy rope made from the silk of a giant spider. The silk is incredibly strong and durable, able to support even heavy weights without breaking.",
+        tags=[Tag.WEAVING, Tag.EQUIPMENT],
+        quality=Quality.UNCOMMON,
+        composition=[MATERIALS[MaterialType.SPIDER_SILK]],
+        craftable=True,
+        flavor_text="The silk from a giant spider is not only valuable, but also incredibly useful. This rope is strong enough to hold up even the heaviest of adventurers."
+    ),
+    ItemName.TOXIC_MUSHROOM: Item(
+        name=ItemName.TOXIC_MUSHROOM,
+        weight=5,
+        value=400,
+        description="A small, brightly colored mushroom that exudes a noxious gas when disturbed.",
+        tags=[Tag.JUNK, Tag.POISON],
+        quality=Quality.POOR,
+        composition=[MATERIALS[m] for m in [MaterialType.ORGANIC, MaterialType.POISON]],
+        craftable=False,
+        flavor_text="While this mushroom may not be edible, it can be used to create a potent poison."
+    ),
+    ItemName.RUNED_STONE: Item(
+        name=ItemName.RUNED_STONE,
+        weight=10,
+        value=9_500,
+        description="A smooth stone etched with mysterious runes, believed to hold magical properties.",
+        tags=[Tag.TREASURE, Tag.MAGIC],
+        quality=Quality.UNCOMMON,
+        composition=[MATERIALS[m] for m in [MaterialType.STONE, MaterialType.ESSENCE]],
+        craftable=False,
+        flavor_text="Legend has it that this stone was imbued with powerful magic by a great goblin wizard."
+    ),
+    ItemName.SMOKED_FISH: Item(
+        name=ItemName.SMOKED_FISH,
+        weight=2,
+        value=800,
+        description="A small fish that has been smoked over a fire, providing a flavorful and long-lasting source of sustenance.",
+        tags=[Tag.FOOD],
+        quality=Quality.COMMON,
+        composition=[MATERIALS[MaterialType.ORGANIC]],
+        craftable=True,
+        flavor_text="This fish may not be fancy, but it's a reliable source of food for goblins on the go."
+    ),
 }
 
 
@@ -335,7 +413,10 @@ def _tag_index() -> Dict[Tag, List[ItemName]]:
 
 
 def random_fm_tag(tag: Tag) -> ItemName:
-    return random.choice(TAG_INDEX[tag])
+    try:
+        return random.choice(TAG_INDEX[tag])
+    except IndexError:
+        return None
 
 
 TAG_INDEX = _tag_index()

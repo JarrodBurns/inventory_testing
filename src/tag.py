@@ -17,3 +17,9 @@ class Tag(str, Enum):
     TOOL            = "Tool"
     TREASURE        = "Treasure"
     SURVIVAL        = "Survival"
+
+    POISON          = "Poison"
+    MAGIC           = "Magic"
+    WEAVING         = "Weaving"
+    FOOD            = "FOOD"
+    EQUIPMENT       = "Equipment"

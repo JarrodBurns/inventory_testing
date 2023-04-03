@@ -49,6 +49,7 @@ if __name__ == '__main__':
             loot_monster_one = LOOT_TABLES[random_monster_one].loot
             print(f"You encounter a level (1) {random_monster_one}!")
             print(f"You defeat the creature and loot: {loot_monster_one}")
+
             print(ITEMS[loot_monster_one].ascii_art())
             print()
             return
