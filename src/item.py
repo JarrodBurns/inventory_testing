@@ -2,7 +2,7 @@
 from collections import defaultdict
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
 import random
 import textwrap
 
@@ -36,9 +36,8 @@ class Item:
     description : str
     quality     : Quality
     craftable   : bool
-    # TODO: Decide if I like that tags/comp can techinically be optional
+    composition : List[Material]
     tags        : List[str] = field(default_factory=list)
-    composition : List[Material] = field(default_factory=list)
     flavor_text : Optional[str] = None
 
     @property
@@ -52,14 +51,14 @@ class Item:
             if (quantity := random.randint(0, max_reward))
         ]
 
-    def __str__(self, line_length=80) -> str:
-        name = f"{self.name} ({self.quality.name})"
-        desc = self.description
-        tags = ", ".join(self.tags)
-        value = f"{self.value/100:.2f} Silver"
-        weight = f"{self.weight} grams"
-        scrap = ", ".join(mat.name.value for mat in self.scrap)
-        lines = [
+    def ascii_art(self, min_line_length=80, max_line_length=80) -> str:
+        name    = f"{self.name} ({self.quality.name})"
+        desc    = self.description
+        tags    = ", ".join(self.tags)
+        value   = f"{self.value/100:.2f} Silver"
+        weight  = f"{self.weight} grams"
+        scrap   = ", ".join(mat.name.value for mat in self.scrap)
+        lines   = [
             name,
             "=" * len(name),
             desc,
@@ -75,17 +74,24 @@ class Item:
             scrap
         ]
 
-        # Wrap lines that exceed line_length
+        # Wrap lines that exceed max_line_length
         wrapped_lines = []
         for line in lines:
-            if len(line) > line_length:
-                wrapped_lines.extend(textwrap.wrap(line, width=line_length))
+            if len(line) > max_line_length:
+                wrapped_lines.extend(textwrap.wrap(line, width=max_line_length))
             else:
                 wrapped_lines.append(line)
 
+        # Add padding to lines shorter than min_line_length
+        padded_lines = []
+        for line in wrapped_lines:
+            if len(line) < min_line_length:
+                line += " " * (min_line_length - len(line))
+            padded_lines.append(line)
+
         # Pad lines to be equal length
-        max_length = max(len(line) for line in wrapped_lines)
-        padded_lines = [f"║ {line.ljust(max_length)} ║" for line in wrapped_lines]
+        max_length = max(len(line) for line in padded_lines)
+        padded_lines = [f"║ {line.ljust(max_length)} ║" for line in padded_lines]
 
         # Format lines as ASCII card
         card = [
@@ -281,4 +287,4 @@ if __name__ == '__main__':
     print()
     pprint(TAG_INDEX)
 
-    print(ITEMS[ItemName.TOOLBOX])
+    print(ITEMS[ItemName.TOOLBOX].ascii_art())
