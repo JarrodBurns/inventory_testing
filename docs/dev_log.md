@@ -4,6 +4,7 @@ describe intent
 ## Tasks
 - [ ] Wallet Object, takes in funds distributes them through the scales
 - [ ] Inventory Object, should contain Item, Material, and Currency
+- [ ] Function to sort by Rarity and Tag
 
 ## Notes
 

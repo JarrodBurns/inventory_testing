@@ -18,9 +18,9 @@ class Monster(str, Enum):
 
 @dataclass
 class LootTable:
-    creature: Monster
-    weights: List[int] = field(default_factory=list)
-    all_loot: List[ItemName] = field(default_factory=list)
+    creature    : Monster
+    weights     : List[int] = field(default_factory=list)
+    all_loot    : List[ItemName] = field(default_factory=list)
 
     def __post_init__(self):
         if len(self.weights) != len(self.all_loot):
