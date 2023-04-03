@@ -11,15 +11,19 @@ class MaterialType(str, Enum):
     ALUMINUM    = "Aluminum"
     BONE        = "Bone"
     BRASS       = "Brass"
+    BRONZE      = "Bronze"
+    COPPER      = "Copper"
     CORK        = "Cork"
     GLASS       = "Glass"
     GRAPHITE    = "Graphite"
     FLINT       = "Flint"
     INK         = "Ink"
     IRON        = "Iron"
+    JADE        = "Jade"
     PAPER       = "Paper"
     PLASTIC     = "Plastic"
     RUBBER      = "Rubber"
+    SILVER      = "Silver"
     STEEL       = "Steel"
     WOOD        = "Wood"
 
@@ -110,15 +114,19 @@ MATERIALS = {
     MaterialType.ALUMINUM   : Material(MaterialType.ALUMINUM, Quality.COMMON),
     MaterialType.BONE       : Material(MaterialType.BONE, Quality.COMMON),
     MaterialType.BRASS      : Material(MaterialType.BRASS, Quality.COMMON),
+    MaterialType.BRONZE     : Material(MaterialType.BRONZE, Quality.COMMON),
+    MaterialType.COPPER     : Material(MaterialType.COPPER, Quality.COMMON),
     MaterialType.CORK       : Material(MaterialType.CORK, Quality.COMMON),
     MaterialType.GLASS      : Material(MaterialType.GLASS, Quality.COMMON),
     MaterialType.GRAPHITE   : Material(MaterialType.GRAPHITE, Quality.COMMON),
     MaterialType.FLINT      : Material(MaterialType.FLINT, Quality.COMMON),
     MaterialType.INK        : Material(MaterialType.INK, Quality.COMMON),
     MaterialType.IRON       : Material(MaterialType.IRON, Quality.COMMON),
+    MaterialType.JADE       : Material(MaterialType.JADE, Quality.COMMON),
     MaterialType.PAPER      : Material(MaterialType.PAPER, Quality.COMMON),
     MaterialType.PLASTIC    : Material(MaterialType.PLASTIC, Quality.COMMON),
     MaterialType.RUBBER     : Material(MaterialType.RUBBER, Quality.COMMON),
+    MaterialType.SILVER     : Material(MaterialType.SILVER, Quality.COMMON),
     MaterialType.STEEL      : Material(MaterialType.STEEL, Quality.UNCOMMON),
     MaterialType.WOOD       : Material(MaterialType.WOOD, Quality.COMMON),
 }

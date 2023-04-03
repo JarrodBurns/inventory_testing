@@ -12,20 +12,26 @@ from tag import Tag
 
 
 class ItemName(str, Enum):
-    BRASS_BUTTON    = "Button"
-    DULL_TOOTH      = "Dull Tooth"
-    FLINT           = "Flint"
-    PENCIL          = "Pencil"
-    INKWELL         = "Inkwell"
-    PLIERS          = "Pliers"
-    HAMMER          = "Hammer"
-    SAW             = "Saw"
-    MEASURING_STICK = "Measuring Stick"
-    TOOLBOX         = "Toolbox"
-    TRASH           = "Trash"
-    NAIL            = "Nail"
-    RUSTY_NAIL      = "Rusty Nail"
-    BOTTLE_CAP      = "Bottle Cap"
+    BRASS_BUTTON        = "Button"
+    DULL_TOOTH          = "Dull Tooth"
+    FLINT               = "Flint"
+    PENCIL              = "Pencil"
+    INKWELL             = "Inkwell"
+    PLIERS              = "Pliers"
+    HAMMER              = "Hammer"
+    SAW                 = "Saw"
+    MEASURING_STICK     = "Measuring Stick"
+    TOOLBOX             = "Toolbox"
+    TRASH               = "Trash"
+    NAIL                = "Nail"
+    RUSTY_NAIL          = "Rusty Nail"
+    BOTTLE_CAP          = "Bottle Cap"
+
+    GOBLET_OF_BRASS     = "Goblet of Brass"
+    SILVER_TOOTH_PICK   = "Silver Tooth Pick"
+    JADE_EARRING        = "Jade Earring"
+    COPPER_KETTLE       = "Copper Kettle"
+    BRONZE_MIRROR       = "Bronze Mirror"
 
 
 @dataclass
@@ -43,7 +49,7 @@ class Item:
     @property
     def scrap(self) -> List[Material]:
 
-        max_reward = self.weight // 2
+        max_reward = self.weight // 2 if self.weight > 1 else 2
         return [
             material + quantity
             for material
@@ -109,8 +115,8 @@ ITEMS = {
         weight=2,
         value=5,
         description="A small metal cap that fits over the top of a bottle. This one is heavily worn and has a faded logo on it.",
-        tags=[Tag.POCKET_LITTER],
-        quality=Quality.JUNK,
+        tags=[Tag.POCKET_LITTER, Tag.JUNK],
+        quality=Quality.POOR,
         composition=[MATERIALS[MaterialType.ALUMINUM]],
         craftable=False,
         flavor_text="This bottle cap has seen better days, with scratches and dents all over its surface. The logo on the top is so faded that it's hard to make out what it used to be."
@@ -131,8 +137,8 @@ ITEMS = {
         weight=5,
         value=10,
         description="A dull and worn tooth that was likely pulled from an animal's mouth. It's not very useful for anything.",
-        tags=[Tag.POCKET_LITTER],
-        quality=Quality.JUNK,
+        tags=[Tag.POCKET_LITTER, Tag.JUNK],
+        quality=Quality.POOR,
         composition=[MATERIALS[MaterialType.BONE]],
         craftable=False,
         flavor_text="This tooth is so worn and useless that you might as well just throw it away."
@@ -150,8 +156,8 @@ ITEMS = {
     ),
     ItemName.HAMMER             : Item(
         name=ItemName.HAMMER,
-        weight=600,  # grams
-        value=8_000,  # pennies
+        weight=600,
+        value=8_000,
         description="A versatile tool used for pounding nails, shaping metal, and other construction tasks.",
         tags=[Tag.TOOL, Tag.CONSTRUCTION],
         quality=Quality.COMMON,
@@ -161,11 +167,11 @@ ITEMS = {
     ),
     ItemName.INKWELL            : Item(
         name=ItemName.INKWELL,
-        weight=50,  # grams
-        value=500,  # pennies
+        weight=50,
+        value=500,
         description="A small jar filled with ink, intended for writing or drawing purposes.",
-        tags=[Tag.OFFICE, Tag.DECORATION],
-        quality=Quality.JUNK,
+        tags=[Tag.OFFICE, Tag.DECORATION, Tag.JUNK],
+        quality=Quality.COMMON,
         composition=[MATERIALS[m] for m in (MaterialType.GLASS, MaterialType.INK, MaterialType.CORK)],
         craftable=True,
         flavor_text="TODO"
@@ -175,7 +181,7 @@ ITEMS = {
         weight=250,
         value=500,
         description="An old-fashioned wooden tool used for measuring lengths and distances, typically used by carpenters and other craftsmen.",
-        tags=[Tag.TOOL, Tag.CONSTRUCTION],
+        tags=[Tag.CONSTRUCTION, Tag.TOOL],
         quality=Quality.COMMON,
         composition=[MATERIALS[MaterialType.WOOD]],
         craftable=True,
@@ -197,18 +203,18 @@ ITEMS = {
         weight=8,  # grams
         value=25,  # pennies
         description="A small implement used for writing",
-        tags=[Tag.OFFICE, Tag.DECORATION],
-        quality=Quality.JUNK,
+        tags=[Tag.OFFICE, Tag.DECORATION, Tag.JUNK],
+        quality=Quality.COMMON,
         composition=[MATERIALS[m] for m in (MaterialType.WOOD, MaterialType.ALUMINUM, MaterialType.GRAPHITE, MaterialType.RUBBER)],
         craftable=True,
         flavor_text="Get to the point..."
     ),
     ItemName.PLIERS             : Item(
         name=ItemName.PLIERS,
-        weight=150,  # grams
-        value=10_000,  # pennies
+        weight=150,
+        value=10_000,
         description="A versatile tool with two serrated jaws for gripping and manipulating objects.",
-        tags=[Tag.TOOL, Tag.MECHANICAL],
+        tags=[Tag.CONSTRUCTION, Tag.TOOL],
         quality=Quality.COMMON,
         composition=[MATERIALS[m] for m in (MaterialType.STEEL, MaterialType.RUBBER)],
         craftable=True,
@@ -219,8 +225,8 @@ ITEMS = {
         weight=3,
         value=5,
         description="A small metal nail that appears to be old and rusted beyond use.",
-        tags=[Tag.POCKET_LITTER],
-        quality=Quality.JUNK,
+        tags=[Tag.POCKET_LITTER, Tag.JUNK],
+        quality=Quality.POOR,
         composition=[MATERIALS[MaterialType.IRON]],
         craftable=False,
         flavor_text="This nail is so rusty and corroded that it would likely break if you tried to use it for anything."
@@ -238,7 +244,7 @@ ITEMS = {
     ),
     ItemName.TOOLBOX            : Item(
         name=ItemName.TOOLBOX,
-        weight=3000,
+        weight=3_000,
         value=50_000,
         description="A sturdy box used for storing and transporting tools.",
         tags=[Tag.TOOL, Tag.CONSTRUCTION, Tag.STORAGE],
@@ -252,12 +258,69 @@ ITEMS = {
         weight=10,
         value=0,
         description="A piece of garbage that someone threw away.",
-        tags=[Tag.POCKET_LITTER],
-        quality=Quality.JUNK,
+        tags=[Tag.POCKET_LITTER, Tag.JUNK],
+        quality=Quality.POOR,
         composition=[MATERIALS[m] for m in [MaterialType.PAPER, MaterialType.PLASTIC]],
         craftable=False,
         flavor_text="This piece of trash doesn't seem to have any use or value. It's dirty and smelly, and definitely not something you want to keep around."
-    )
+    ),
+
+    # Treasure
+    ItemName.GOBLET_OF_BRASS    : Item(
+        name=ItemName.GOBLET_OF_BRASS,
+        weight=4,
+        value=2_300,
+        description="A simple goblet made of brass, probably used for drinking.",
+        tags=[Tag.DINING, Tag.ACCESSORY, Tag.TREASURE],
+        quality=Quality.POOR,
+        composition=[MATERIALS[MaterialType.BRASS]],
+        craftable=True,
+        flavor_text="Despite its modest appearance, this goblet has likely seen many a raucous goblin feast."
+    ),
+    ItemName.SILVER_TOOTH_PICK  : Item(
+        name=ItemName.SILVER_TOOTH_PICK,
+        weight=1,
+        value=6_200,
+        description="A small silver toothpick, probably used to clean teeth after meals.",
+        tags=[Tag.DINING, Tag.ACCESSORY, Tag.TREASURE],
+        quality=Quality.COMMON,
+        composition=[MATERIALS[MaterialType.SILVER]],
+        craftable=True,
+        flavor_text="This toothpick may seem like a small and unremarkable item, but its craftsmanship is surprisingly delicate."
+    ),
+    ItemName.JADE_EARRING       : Item(
+        name=ItemName.JADE_EARRING,
+        weight=2,
+        value=8_000,
+        description="A single jade earring, probably worn as an accessory.",
+        tags=[Tag.JEWELRY, Tag.ACCESSORY, Tag.TREASURE],
+        quality=Quality.UNCOMMON,
+        composition=[MATERIALS[MaterialType.JADE]],
+        craftable=True,
+        flavor_text="This earring may have once belonged to a goblin of high status, or perhaps it was stolen from a human traveler."
+    ),
+    ItemName.COPPER_KETTLE      : Item(
+        name=ItemName.COPPER_KETTLE,
+        weight=7,
+        value=3_100,
+        description="A large copper kettle, probably used for boiling water or brewing tea.",
+        tags=[Tag.DINING, Tag.ACCESSORY, Tag.TREASURE],
+        quality=Quality.POOR,
+        composition=[MATERIALS[MaterialType.COPPER]],
+        craftable=True,
+        flavor_text="Despite its dents and scratches, this kettle still seems to function well enough for its intended purpose."
+    ),
+    ItemName.BRONZE_MIRROR      : Item(
+        name=ItemName.BRONZE_MIRROR,
+        weight=5,
+        value=9_200,
+        description="A small bronze mirror, probably used for personal grooming or vanity.",
+        tags=[Tag.ACCESSORY, Tag.TREASURE],
+        quality=Quality.COMMON,
+        composition=[MATERIALS[MaterialType.BRONZE]],
+        craftable=True,
+        flavor_text="This mirror may have been stolen from a human's vanity, or perhaps it was a treasured possession of a particularly vain goblin."
+    ),
 }
 
 
@@ -282,6 +345,7 @@ if __name__ == '__main__':
     from pprint import pprint as pprint
 
     print(TAG_INDEX[Tag.POCKET_LITTER])
+    print(TAG_INDEX[Tag.JUNK])
     print()
     print(random_fm_tag(Tag.POCKET_LITTER))
     print()

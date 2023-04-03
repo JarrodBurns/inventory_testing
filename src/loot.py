@@ -34,24 +34,26 @@ class LootTable:
 LOOT_TABLES = {
     Monster.GOBLIN: LootTable(
         creature=Monster.GOBLIN,
-        weights=[1, 9, 15, 15, 60],
+        weights=[1, 2, 7, 15, 15, 60],
         all_loot=[
             ItemName.TOOLBOX,
+            random_fm_tag(Tag.TREASURE),
             random_fm_tag(Tag.TOOL),
             random_fm_tag(Tag.DECORATION),
             random_fm_tag(Tag.CLOTHING),
-            random_fm_tag(Tag.POCKET_LITTER),
+            random_fm_tag(Tag.JUNK),
         ]
     ),
     Monster.TROLL: LootTable(
         creature=Monster.TROLL,
-        weights=[10, 15, 15, 20, 40],
+        weights=[4, 10, 15, 15, 20, 36],
         all_loot=[
+            random_fm_tag(Tag.TREASURE),
             ItemName.TOOLBOX,
             random_fm_tag(Tag.DECORATION),
             random_fm_tag(Tag.CLOTHING),
             random_fm_tag(Tag.TOOL),
-            random_fm_tag(Tag.POCKET_LITTER),
+            random_fm_tag(Tag.JUNK),
         ]
     )
 }
