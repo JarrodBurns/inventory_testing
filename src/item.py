@@ -25,7 +25,7 @@ class ItemName(str, Enum):
     SPIDER_SILK_ROPE    = "Spider Silk Rope"
     TOOLBOX             = "Toolbox"
 
-    # Junk
+    # Junk--Scrap
     BOTTLE_CAP          = "Bottle Cap"
     DULL_TOOTH          = "Dull Tooth"
     INKWELL             = "Inkwell"
@@ -35,7 +35,7 @@ class ItemName(str, Enum):
     TRASH               = "Trash"
     WOVEN_BASKET        = "Woven Basket"
 
-    # Treasure
+    # Treasure--VendorTrash
     BRONZE_MIRROR       = "Bronze Mirror"
     COPPER_KETTLE       = "Copper Kettle"
     GOBLET_OF_BRASS     = "Goblet of Brass"
@@ -133,7 +133,7 @@ ITEMS = {
     ),
     ItemName.BOTTLE_CAP         : Item(
         name=ItemName.BOTTLE_CAP,
-        weight=2,
+        weight=1,
         value=5,
         description="A small metal cap that fits over the top of a bottle. This one is heavily worn and has a faded logo on it.",
         tags=[Tag.POCKET_LITTER, Tag.JUNK],
