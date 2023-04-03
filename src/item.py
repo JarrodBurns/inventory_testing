@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional, Dict
 import random
+import textwrap
 
 from material import Material, MaterialType, MATERIALS
 from quality import Quality
@@ -50,6 +51,50 @@ class Item:
             in self.composition
             if (quantity := random.randint(0, max_reward))
         ]
+
+    def __str__(self, line_length=80) -> str:
+        name = f"{self.name} ({self.quality.name})"
+        desc = self.description
+        tags = ", ".join(self.tags)
+        value = f"{self.value/100:.2f} Silver"
+        weight = f"{self.weight} grams"
+        scrap = ", ".join(mat.name.value for mat in self.scrap)
+        lines = [
+            name,
+            "=" * len(name),
+            desc,
+            "",
+            "Tags:",
+            tags,
+            "",
+            "Value:",
+            value,
+            "Weight:",
+            weight,
+            "Scrap:",
+            scrap
+        ]
+
+        # Wrap lines that exceed line_length
+        wrapped_lines = []
+        for line in lines:
+            if len(line) > line_length:
+                wrapped_lines.extend(textwrap.wrap(line, width=line_length))
+            else:
+                wrapped_lines.append(line)
+
+        # Pad lines to be equal length
+        max_length = max(len(line) for line in wrapped_lines)
+        padded_lines = [f"║ {line.ljust(max_length)} ║" for line in wrapped_lines]
+
+        # Format lines as ASCII card
+        card = [
+            f"╔{'═' * (max_length + 2)}╗"
+        ] + padded_lines + [
+            f"╚{'═' * (max_length + 2)}╝"
+        ]
+
+        return "\n".join(card)
 
 
 ITEMS = {
@@ -235,3 +280,5 @@ if __name__ == '__main__':
     print(random_fm_tag(Tag.POCKET_LITTER))
     print()
     pprint(TAG_INDEX)
+
+    print(ITEMS[ItemName.TOOLBOX])

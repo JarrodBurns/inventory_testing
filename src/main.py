@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import List, Union
 import random
 
-from item import Item, ItemName
+from item import Item, ItemName, ITEMS
 from loot import Monster, LOOT_TABLES
 from material import Material
 
@@ -64,3 +64,5 @@ if __name__ == '__main__':
 
     # j = get_random_item().scrap
     # print(j[0])
+
+    print(get_random_item())
