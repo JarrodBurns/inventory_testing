@@ -31,7 +31,13 @@ class LootTable:
 
     @property
     def loot(self) -> ItemName:
-        return random.choices(self.all_loot, weights=self.weights)[0]
+
+        random_item = random.choices(self.all_loot, weights=self.weights)[0]
+
+        if isinstance(random_item, Tag):
+            return random_fm_tag(random_item)
+
+        return random_item
 
 
 LOOT_TABLES = {
@@ -40,62 +46,71 @@ LOOT_TABLES = {
         weights=[1, 2, 7, 15, 15, 60],
         all_loot=[
             ItemName.TOOLBOX,
-            random_fm_tag(Tag.TREASURE),
-            random_fm_tag(Tag.TOOL),
-            random_fm_tag(Tag.DECORATION),
-            random_fm_tag(Tag.CLOTHING),
-            random_fm_tag(Tag.JUNK),
+            Tag.TREASURE,
+            Tag.TOOL,
+            Tag.DECORATION,
+            Tag.CLOTHING,
+            Tag.JUNK,
         ]
     ),
     Monster.TROLL: LootTable(
         creature=Monster.TROLL,
         weights=[4, 10, 15, 15, 20, 36],
         all_loot=[
-            random_fm_tag(Tag.TREASURE),
+            Tag.TREASURE,
             ItemName.TOOLBOX,
-            random_fm_tag(Tag.DECORATION),
-            random_fm_tag(Tag.CLOTHING),
-            random_fm_tag(Tag.TOOL),
-            random_fm_tag(Tag.JUNK),
+            Tag.DECORATION,
+            Tag.CLOTHING,
+            Tag.TOOL,
+            Tag.JUNK,
         ]
     ),
     Monster.OGRE: LootTable(
         creature=Monster.OGRE,
         weights=[2, 8, 15, 20, 30, 25],
         all_loot=[
-            random_fm_tag(Tag.TREASURE),
-            random_fm_tag(Tag.TOOL),
-            random_fm_tag(Tag.CLOTHING),
-            random_fm_tag(Tag.DECORATION),
-            random_fm_tag(Tag.JUNK),
-            random_fm_tag(Tag.FOOD),
+            Tag.TREASURE,
+            Tag.TOOL,
+            Tag.CLOTHING,
+            Tag.DECORATION,
+            Tag.JUNK,
+            Tag.FOOD,
         ]
     ),
     Monster.GIANT_SPIDER: LootTable(
         creature=Monster.GIANT_SPIDER,
         weights=[2, 10, 20, 25, 30, 13],
         all_loot=[
-            random_fm_tag(Tag.TREASURE),
-            random_fm_tag(Tag.WEAVING),
-            random_fm_tag(Tag.CLOTHING),
-            random_fm_tag(Tag.DECORATION),
-            random_fm_tag(Tag.JUNK),
-            random_fm_tag(Tag.POISON),
+            Tag.TREASURE,
+            Tag.WEAVING,
+            Tag.CLOTHING,
+            Tag.DECORATION,
+            Tag.JUNK,
+            Tag.POISON,
         ]
     ),
     Monster.GOBLIN_SHAMAN: LootTable(
         creature=Monster.GOBLIN_SHAMAN,
         weights=[5, 10, 20, 25, 25, 15],
         all_loot=[
-            random_fm_tag(Tag.TREASURE),
-            random_fm_tag(Tag.CLOTHING),
-            random_fm_tag(Tag.MAGIC),
-            random_fm_tag(Tag.DECORATION),
-            random_fm_tag(Tag.TOOL),
-            random_fm_tag(Tag.JUNK),
+            Tag.TREASURE,
+            Tag.CLOTHING,
+            Tag.MAGIC,
+            Tag.DECORATION,
+            Tag.TOOL,
+            Tag.JUNK,
         ]
     ),
 }
 
 if __name__ == '__main__':
     pass
+
+    print(LOOT_TABLES[Monster.GOBLIN].loot)
+    print(LOOT_TABLES[Monster.GOBLIN].loot)
+    print(LOOT_TABLES[Monster.GOBLIN].loot)
+    print(LOOT_TABLES[Monster.GOBLIN].loot)
+    print(LOOT_TABLES[Monster.GOBLIN].loot)
+    print(LOOT_TABLES[Monster.GOBLIN].loot)
+    print(LOOT_TABLES[Monster.GOBLIN].loot)
+    print(LOOT_TABLES[Monster.GOBLIN].loot)

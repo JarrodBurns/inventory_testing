@@ -47,7 +47,7 @@ if __name__ == '__main__':
         if level == 1:
             random_monster_one = random.choice(besdiary)
             loot_monster_one = LOOT_TABLES[random_monster_one].loot
-            print(f"You encounter a level (1) {random_monster_one}!")
+            print(f"You encounter a level (1) {random_monster_one.value}!")
             print(f"You defeat the creature and loot: {loot_monster_one}")
 
             print(ITEMS[loot_monster_one].ascii_art())
@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
         random_monster_two = random.choice(besdiary)
         loot_monster_two = loot_for_level(random_monster_two, level)
-        print(f"You encounter a level ({level}) {random_monster_two}!")
+        print(f"You encounter a level ({level}) {random_monster_two.value}!")
         print(f"You defeat the creature and loot: {', '.join(loot_monster_two)}")
 
         for i in loot_monster_two:

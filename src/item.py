@@ -68,7 +68,7 @@ class Item:
         ]
 
     def ascii_art(self, min_line_length=80, max_line_length=80) -> str:
-        name    = f"{self.name} ({self.quality.name})"
+        name    = f"{self.name.value} ({self.quality.name})"
         desc    = self.description
         tags    = ", ".join(self.tags)
         value   = f"{self.value/100:.2f} Silver"
