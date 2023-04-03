@@ -4,7 +4,8 @@ from enum import Enum
 from typing import List
 import random
 
-from item import ItemName
+from item import ItemName, random_fm_tag
+from tag import Tag
 
 
 class Monster(str, Enum):
@@ -33,20 +34,24 @@ class LootTable:
 LOOT_TABLES = {
     Monster.GOBLIN: LootTable(
         creature=Monster.GOBLIN,
-        weights=[15, 40, 45],
+        weights=[1, 9, 15, 15, 60],
         all_loot=[
-            ItemName.PLIERS,
-            ItemName.INKWELL,
-            ItemName.PENCIL,
+            ItemName.TOOLBOX,
+            random_fm_tag(Tag.TOOL),
+            random_fm_tag(Tag.DECORATION),
+            random_fm_tag(Tag.CLOTHING),
+            random_fm_tag(Tag.POCKET_LITTER),
         ]
     ),
     Monster.TROLL: LootTable(
         creature=Monster.TROLL,
-        weights=[15, 40, 45],
+        weights=[10, 15, 15, 20, 40],
         all_loot=[
             ItemName.TOOLBOX,
-            ItemName.HAMMER,
-            ItemName.INKWELL,
+            random_fm_tag(Tag.DECORATION),
+            random_fm_tag(Tag.CLOTHING),
+            random_fm_tag(Tag.TOOL),
+            random_fm_tag(Tag.POCKET_LITTER),
         ]
     )
 }

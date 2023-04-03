@@ -3,10 +3,11 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional, Dict
+import random
 
+from material import Material, MaterialType, MATERIALS
 from quality import Quality
 from tag import Tag
-from material import Material, MaterialType, MATERIALS
 
 
 class ItemName(str, Enum):
@@ -219,11 +220,18 @@ def _tag_index() -> Dict[Tag, List[ItemName]]:
     return tag_index
 
 
+def random_fm_tag(tag: Tag) -> ItemName:
+    return random.choice(TAG_INDEX[tag])
+
+
 TAG_INDEX = _tag_index()
 
 if __name__ == '__main__':
 
     from pprint import pprint as pprint
+
     print(TAG_INDEX[Tag.POCKET_LITTER])
+    print()
+    print(random_fm_tag(Tag.POCKET_LITTER))
     print()
     pprint(TAG_INDEX)

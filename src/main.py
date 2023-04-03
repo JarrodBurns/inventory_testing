@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 from typing import List, Union
 import random
 
-from loot import Monster, LOOT_TABLES
 from item import Item, ItemName
+from loot import Monster, LOOT_TABLES
 from material import Material
 
 
