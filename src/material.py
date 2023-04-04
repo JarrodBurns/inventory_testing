@@ -42,6 +42,9 @@ class Material:
     quality: Quality
     quantity: int = 0
 
+    def __str__(self) -> str:
+        return f"|  ({self.quantity}) {self.name} [{self.quality}]"
+
     def __bool__(self) -> bool:
         return self.quantity > 0
 
@@ -74,11 +77,19 @@ class Material:
 
     def __sub__(self, other: Union[int, 'Material']) -> 'Material':
         if isinstance(other, int):
+
+            if self.quantity - other < 0:
+                raise ValueError("Insufficient material.")
+
             return Material(self.name, self.quality, self.quantity - other)
 
         elif isinstance(other, Material):
+
             if self.name != other.name or self.quality != other.quality:
                 raise ValueError("Cannot subtract Materials of different types or qualities")
+
+            if self.quantity - other.quantity < 0:
+                raise ValueError("Insufficient material.")
 
             return Material(self.name, self.quality, self.quantity - other.quantity)
 
@@ -86,9 +97,17 @@ class Material:
 
     def __isub__(self, other: Union[int, 'Material']) -> 'Material':
         if isinstance(other, int):
+
+            if self.quantity - other < 0:
+                raise ValueError("Insufficient material.")
+
             self.quantity -= other
 
         elif isinstance(other, Material) and self.name == other.name and self.quality == other.quality:
+
+            if self.quantity - other.quantity < 0:
+                raise ValueError("Insufficient material.")
+
             self.quantity -= other.quantity
 
         else:
@@ -146,3 +165,16 @@ MATERIALS = {
 
 def select_materials_by_quality(quality: Quality) -> List[Material]:
     return [material for material in MATERIALS.values() if material.quality == quality]
+
+
+if __name__ == '__main__':
+
+    import CopyToClipBoard
+
+    name = "test"
+    quality = "common"
+    # name = []
+    # quality = []
+
+    CopyToClipBoard.materials(name, quality)
+    CopyToClipBoard.material_type(name)

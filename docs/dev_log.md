@@ -3,27 +3,23 @@ describe intent
 
 ## Tasks
 - [ ] Wallet Object, takes in funds distributes them through the scales
-- [ ] Inventory Object, should contain Item, Material, and Currency
 - [ ] Function to sort by Rarity and Tag
+- [ ] Custom errors for Inventory.remove_material and Material dunder methods
+- [ ] Look into adding negative numbers to material and see if it breaks
+- [ ] Some functions could return bool and error code for custom errors
 
 ## Notes
 
+
 ## Dependencies
 
-class CurrencyType(str, Enum):
-    COPPER = "Copper"
-    SILVER = "Silver"
-    GOLD   = "Gold"
+## Module TODO
 
-Lets make a wallet class, called Wallet. 
-
-It should manage the currenies provided by the CurrencyType enum, and the code should leave the class open to adding more currencies in the future.
-
-Each CurrencyType is worth 100 of the previous currency, i.e. 1 gold = 100 silver.
-
-The class needs a way for it to 
-
-You should be able to add or subtract a Wallet from another Wallet, and handle all appropriate errors.
-
-I also think the wallet should be smart enough to color up it's own currencies, meaning if it has 101 silver, it should actually be 1 silver and 1 gold.
-
+### Inventory
+- [X] Inventory Object, should contain: `Item`, `Material`, and `Currency`
+- [X] add logic to delete materials from dict
+- [ ] \_\_iadd\_\_ logic needs testing and probably a refactor 
+- [ ] `Inventory` \_\_str\_\_ should be \_\_repr\_\_
+- [ ] Unit tests, hand tests are too cumbersome here, I think.
+- [ ] Consider add and remove methods for the `.wallet`
+- [ ] `CurrencyAmount` getter for `.wallet`

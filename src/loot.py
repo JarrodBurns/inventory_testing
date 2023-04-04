@@ -105,12 +105,3 @@ LOOT_TABLES = {
 
 if __name__ == '__main__':
     pass
-
-    print(LOOT_TABLES[Monster.GOBLIN].loot)
-    print(LOOT_TABLES[Monster.GOBLIN].loot)
-    print(LOOT_TABLES[Monster.GOBLIN].loot)
-    print(LOOT_TABLES[Monster.GOBLIN].loot)
-    print(LOOT_TABLES[Monster.GOBLIN].loot)
-    print(LOOT_TABLES[Monster.GOBLIN].loot)
-    print(LOOT_TABLES[Monster.GOBLIN].loot)
-    print(LOOT_TABLES[Monster.GOBLIN].loot)
