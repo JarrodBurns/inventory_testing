@@ -6,14 +6,14 @@ from typing import Dict, List, Optional
 import random
 import textwrap
 
+from access_wrapper import AccessWrapper
 from material import Material, MaterialType, MATERIALS
 from quality import Quality
 from tag import Tag
+from wallet import Wallet
 
 
 class ItemName(str, Enum):
-    _DEV_FILLER         = "_DEV_FILLER"
-
     BRASS_BUTTON        = "Button"
     FLINT               = "Flint"
     HAMMER              = "Hammer"
@@ -71,9 +71,9 @@ class Item:
         name    = f"{self.name.value} ({self.quality.name})"
         desc    = self.description
         tags    = ", ".join(self.tags)
-        value   = f"{self.value/100:.2f} Silver"
+        value   = str(Wallet(self.value)._color_up())
         weight  = f"{self.weight} grams"
-        scrap   = ", ".join(mat.name.value for mat in self.scrap)
+        scrap   = ", ".join(mat.name for mat in self.composition)
         lines   = [
             name,
             "=" * len(name),
@@ -120,17 +120,6 @@ class Item:
 
 
 ITEMS = {
-    ItemName._DEV_FILLER         : Item(
-        name=ItemName._DEV_FILLER,
-        weight=1,
-        value=5,
-        description="Send it straight to the dev/null!",
-        tags=[],
-        quality=Quality.LEGENDARY,
-        composition=[],
-        craftable=False,
-        flavor_text="0010"
-    ),
     ItemName.BOTTLE_CAP         : Item(
         name=ItemName.BOTTLE_CAP,
         weight=1,
@@ -368,7 +357,7 @@ ITEMS = {
     ),
     ItemName.TOXIC_MUSHROOM: Item(
         name=ItemName.TOXIC_MUSHROOM,
-        weight=5,
+        weight=8,
         value=400,
         description="A small, brightly colored mushroom that exudes a noxious gas when disturbed.",
         tags=[Tag.JUNK, Tag.POISON],
@@ -390,7 +379,7 @@ ITEMS = {
     ),
     ItemName.SMOKED_FISH: Item(
         name=ItemName.SMOKED_FISH,
-        weight=2,
+        weight=7,
         value=800,
         description="A small fish that has been smoked over a fire, providing a flavorful and long-lasting source of sustenance.",
         tags=[Tag.FOOD],
@@ -412,24 +401,67 @@ def _tag_index() -> Dict[Tag, List[ItemName]]:
     return tag_index
 
 
-def random_fm_tag(tag: Tag) -> ItemName:
-    try:
-        return random.choice(TAG_INDEX[tag])
-    except IndexError:
-        return None
-
-
 TAG_INDEX = _tag_index()
+
+
+class ItemManager:
+    ITEMS       : Dict[ItemName, Item] = ITEMS
+    TAG_INDEX   : Dict[Tag, List[ItemName]] = TAG_INDEX
+
+    Item        : AccessWrapper = AccessWrapper(ITEMS, ItemName)
+    TagIndex    : AccessWrapper = AccessWrapper(TAG_INDEX, Tag)
+
+    @classmethod
+    def get_item_fm_name(cls, item_name: ItemName) -> Item:
+        try:
+            return cls.ITEMS[item_name]
+
+        except KeyError:
+            return None
+
+    @classmethod
+    def get_random_item_fm_tag(cls, tag: Tag) -> Item:
+        try:
+            return cls.ITEMS[random.choice(cls.TAG_INDEX[tag])]
+
+        except IndexError:
+            return None
+
+    @classmethod
+    def get_random_item_name_fm_tag(cls, tag: Tag) -> ItemName:
+        try:
+            return random.choice(cls.TAG_INDEX[tag])
+
+        except IndexError:
+            return None
+
+    @classmethod
+    def get_random_item(cls) -> Item:
+        return cls.ITEMS[random.choice(list(ItemName))]
+
 
 if __name__ == '__main__':
 
     from pprint import pprint as pprint
 
-    print(TAG_INDEX[Tag.POCKET_LITTER])
-    print(TAG_INDEX[Tag.JUNK])
-    print()
-    print(random_fm_tag(Tag.POCKET_LITTER))
-    print()
-    pprint(TAG_INDEX)
+    # Accessing Items (let me count the ways...)
+    ItemManager.Item.TOOLBOX.scrap
+    ItemManager.Item[ItemName.TOOLBOX].scrap
 
-    print(ITEMS[ItemName.TOOLBOX].ascii_art())
+    ItemManager.get_item_fm_name(ItemName.TOOLBOX).scrap
+    ITEMS[ItemName.TOOLBOX].scrap
+    ItemManager.ITEMS[ItemName.TOOLBOX].scrap
+
+    print(ItemManager.Item.TOOLBOX.ascii_art())
+    print(ItemManager.TagIndex.FOOD)
+
+    # print(TAG_INDEX[Tag.POCKET_LITTER])
+    # print(TAG_INDEX[Tag.JUNK])
+    # print()
+    # pprint(TAG_INDEX)
+
+    # print(ITEMS[ItemName.TOOLBOX].ascii_art())
+    # print(ItemManager.get_item_fm_name(ItemName.TOOLBOX).ascii_art())
+    # print(ItemManager.get_item_fm_name(ItemName.TOOLBOX))
+    # print(ItemManager.get_random_item_fm_tag(Tag.JUNK))
+    # print(ItemManager.get_random_item())

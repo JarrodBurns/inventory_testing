@@ -1,10 +1,12 @@
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List
+from typing import Dict, List
 import random
 
-from item import ItemName, random_fm_tag
+from access_wrapper import AccessWrapper
+from inventory import Inventory
+from item import ItemManager, ItemName
 from tag import Tag
 
 
@@ -35,9 +37,28 @@ class LootTable:
         random_item = random.choices(self.all_loot, weights=self.weights)[0]
 
         if isinstance(random_item, Tag):
-            return random_fm_tag(random_item)
+            return ItemManager.get_random_item_name_fm_tag(random_item)
 
-        return random_item
+        if isinstance(random_item, ItemName):
+            return random_item
+
+    @property
+    def creature_value(self) -> int:
+
+        value = 0
+        for loot in self.all_loot:
+
+            if isinstance(loot, Tag):
+                value += ItemManager.get_random_item_fm_tag(loot).value
+
+            if isinstance(loot, ItemName):
+                value += ItemManager.get_item_fm_name(loot).value
+
+        return value // 100
+
+    @property
+    def inventory(self) -> Inventory:
+        return Inventory().add_item(self.loot).add_currency(self.creature_value)
 
 
 LOOT_TABLES = {
@@ -50,7 +71,7 @@ LOOT_TABLES = {
             Tag.TOOL,
             Tag.DECORATION,
             Tag.CLOTHING,
-            Tag.JUNK,
+            Tag.JUNK
         ]
     ),
     Monster.TROLL: LootTable(
@@ -62,7 +83,7 @@ LOOT_TABLES = {
             Tag.DECORATION,
             Tag.CLOTHING,
             Tag.TOOL,
-            Tag.JUNK,
+            Tag.JUNK
         ]
     ),
     Monster.OGRE: LootTable(
@@ -103,5 +124,31 @@ LOOT_TABLES = {
     ),
 }
 
+
+class LootManager:
+    LOOT_TABLES: Dict[Monster, LootTable] = LOOT_TABLES
+    Tables: AccessWrapper = AccessWrapper(LOOT_TABLES, Monster)
+
+    @classmethod
+    def get_loot_table_fm_monster_name(cls, creature: Monster) -> LootTable:
+        return cls.LOOT_TABLES[creature]
+
+    @classmethod
+    def get_random_loot_table(cls) -> LootTable:
+        return cls.LOOT_TABLES[random.choice(list(Monster))]
+
+    @classmethod
+    def get_random_loot_table_fm_tag(cls) -> LootTable:
+        raise NotImplementedError("Functionality not yet implemented")
+
+
 if __name__ == '__main__':
     pass
+
+    # lt = LOOT_TABLES[Monster.GOBLIN]
+    # print(lt.creature_value)
+    # print(lt.all_loot)
+    # lt.loot
+
+    # print(LootManager.get_loot_table_fm_monster_name(Monster.GOBLIN))
+    # print(LootManager.get_random_loot_table())

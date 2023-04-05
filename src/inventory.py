@@ -1,10 +1,12 @@
 
-from typing import List, Dict
 from collections import defaultdict
+from typing import Dict, List, Union
 
 from wallet import Wallet
-from material import Material
-from item import ItemName, ITEMS
+from material import Material, MaterialType
+from item import ItemName
+
+from access_wrapper import AccessWrapper
 
 
 class Inventory:
@@ -14,27 +16,38 @@ class Inventory:
         self.wallet     : Wallet = Wallet(0)
         self.materials  : Dict[MaterialType, Material] = {}
 
+        self.Items      : AccessWrapper = AccessWrapper(self.items, ItemName)
+        self.Materials  : AccessWrapper = AccessWrapper(self.materials, MaterialType)
+
     def __iadd__(self, other: "Inventory") -> "Inventory":
-        print("fsdhfjksdhfkuds", other.items)
+
         if isinstance(other, Inventory):
 
-            while other.items:
-                for i in other.items:
-                    self.add_item(i)
-                    other.remove_item(i)
+            for k, v in other.items.items():
+                self.items[k] += v
 
             self.wallet += other.wallet
             self.add_materials(other.materials.values())
 
         return self
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Inventory(items={self.items}, wallet={self.wallet}, materials={self.materials})"
 
-    def add_item(self, item: ItemName) -> None:
-        self.items[item] += 1
+    def get_all_items(self) -> List[ItemName]:
+        return [item for item, count in self.items.items() if count for _ in range(count)]
 
-    def remove_item(self, item: ItemName) -> None:
+    def add_item(self, item: Union[ItemName, List[ItemName]]) -> "Inventory":
+        if isinstance(item, ItemName):
+            self.items[item] += 1
+
+        elif isinstance(item, list):
+            for i in item:
+                self.items[i] += 1
+
+        return self
+
+    def remove_item(self, item: ItemName) -> "Inventory":
 
         if not self.items.get(item):
             raise KeyError("Item not found.")
@@ -48,7 +61,17 @@ class Inventory:
         else:
             self.items[item] -= 1
 
-    def add_materials(self, mat: List[Material]) -> None:
+        return self
+
+    def add_currency(self, amt: int) -> "Inventory":
+        self.wallet += amt
+        return self
+
+    def remove_currency(self, amt: int) -> "Inventory":
+        self.wallet -= amt
+        return self
+
+    def add_materials(self, mat: List[Material]) -> "Inventory":
 
         for m in mat:
             if self.materials.get(m.name):
@@ -57,65 +80,50 @@ class Inventory:
             else:
                 self.materials[m.name] = m
 
-    def remove_materials(self, mat: List[Material]) -> None:
+        return self
+
+    def remove_materials(self, mat: List[Material]) -> "Inventory":
 
         for m in mat:
 
             if not self.materials.get(m.name):
-                raise KeyError("Insufficient material.")
+                raise ValueError("Insufficient material.")
 
             self.materials[m.name] -= m
 
             if self.materials[m.name].quantity == 0:
                 del self.materials[m.name]
 
+        return self
+
 
 if __name__ == '__main__':
 
+    # For tests see test_inventory.py
+
+    from quality import Quality
+    from material import MaterialType
+
+    # Demo of usage
     i = Inventory()
-
-    print("Add Items")
     item = ItemName.RUNED_STONE
-    i.add_item(item)
-    i.add_item(item)
-    print(f"{i.items}")
+    material = [Material(MaterialType.PAPER, Quality.COMMON, 5)]
 
-    print("Sub Items")
-    i.remove_item(item)
+    i.add_item(item)
     # i.remove_item(item)
-    # i.remove_item(item)
-    print(f"{i.items=}")
 
-    print("Add Wallet")
-    w = Wallet(5)
-    i.wallet += w
     i.wallet += 5
-    print(f"{i.wallet=}")
+    i.wallet += Wallet(5)
 
-    print("Sub Wallet")
-    i.wallet -= 1
-    print(f"{i.wallet=}")
+    i.wallet -= 5
+    i.wallet -= Wallet(5)
 
-    print("Add Material")
-    scrap = ITEMS[ItemName.TRASH].scrap
-    print(f"{scrap[0].quantity=}")
-    i.add_materials(scrap)
-    i.add_materials(scrap)
-    print(f"{i.materials=}")
+    i.add_materials(material)
+    i.remove_materials(material)
 
-    print("Sub Material")
-    a = ITEMS[ItemName.HAMMER].scrap
-    b = ITEMS[ItemName.SAW].scrap
-    i.add_materials(a)
-    i.add_materials(b)
-    print(f"{i.materials=}")
-    i.remove_materials(b)
-    print(f"{i.materials=}")
-
-    i.add_item(item)
-    i.add_item(item)
-    print()
-    print(i)
     i += i
-    print()
-    print(i)
+
+    # print(i.Materials.PAPER)
+    # print(i.Items.RUNED_STONE)
+
+    print(i.get_all_items())
