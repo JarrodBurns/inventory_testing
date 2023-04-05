@@ -44,7 +44,13 @@ LootSimlator is ...
 ### Loot
 - [ ] Rename creature to monster_name?
 - [ ] Add tags to `LootTable`
+- [ ] Loot table is a static class, freeze it?
 
 ### Material
 - [ ] Consider "always expecting list of material bs" overload for str
-- [ ] 
+
+### Loot
+- [ ] `encounter_by_level code can be reduced by defining __add__`[^1]
+
+##### Footnotes
+[^1]: `return sum([self.inventory for _ in range(level)], Inventory())`

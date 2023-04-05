@@ -60,6 +60,18 @@ class LootTable:
     def inventory(self) -> Inventory:
         return Inventory().add_item(self.loot).add_currency(self.creature_value)
 
+    def encounter_by_level(self, level: int = 1) -> Inventory:
+
+        if level < 1:
+            raise ValueError(f"Level '{level}' must be a positive integer")
+
+        _inventory = Inventory()
+
+        for _ in range(level):
+            _inventory += self.inventory
+
+        return _inventory
+
 
 LOOT_TABLES = {
     Monster.GOBLIN: LootTable(
@@ -152,3 +164,6 @@ if __name__ == '__main__':
 
     # print(LootManager.get_loot_table_fm_monster_name(Monster.GOBLIN))
     # print(LootManager.get_random_loot_table())
+    # i = lt.encounter_by_level(5)
+
+    print(LootManager.Tables[Monster.GOBLIN].encounter_by_level(5))
