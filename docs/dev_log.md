@@ -36,6 +36,7 @@ LootSimlator is ...
 
 ### Item
 - [ ] Consider: raising error for `random_fm_tag` and `get_item` over returning None
+- [ ] Scrub weights and values down to TRASH ("Switch to pounds?")
 
 ### Monster
 - [ ] Rename to MonsterName

@@ -2,18 +2,17 @@
 from collections import defaultdict
 from typing import Dict, List, Union
 
-from wallet import Wallet
-from material import Material, MaterialType
-from item import ItemName
-
 from access_wrapper import AccessWrapper
+from currency import Currency
+from item import ItemName
+from material import Material, MaterialType
 
 
 class Inventory:
 
     def __init__(self):
         self.items      : defaultdict[ItemName, int] = defaultdict(int)
-        self.wallet     : Wallet = Wallet(0)
+        self.currency   : Currency = Currency()
         self.materials  : Dict[MaterialType, Material] = {}
 
         self.Items      : AccessWrapper = AccessWrapper(self.items, ItemName)
@@ -26,13 +25,13 @@ class Inventory:
             for k, v in other.items.items():
                 self.items[k] += v
 
-            self.wallet += other.wallet
+            self.currency += other.currency
             self.add_materials(other.materials.values())
 
         return self
 
     def __str__(self) -> str:
-        return f"Inventory(items={self.items}, wallet={self.wallet}, materials={self.materials})"
+        return f"Inventory(items={self.items}, currency={self.currency}, materials={self.materials})"
 
     def get_all_items(self) -> List[ItemName]:
         return [item for item, count in self.items.items() if count for _ in range(count)]
@@ -64,11 +63,11 @@ class Inventory:
         return self
 
     def add_currency(self, amt: int) -> "Inventory":
-        self.wallet += amt
+        self.currency += amt
         return self
 
     def remove_currency(self, amt: int) -> "Inventory":
-        self.wallet -= amt
+        self.currency -= amt
         return self
 
     def add_materials(self, mat: List[Material]) -> "Inventory":
@@ -112,11 +111,11 @@ if __name__ == '__main__':
     i.add_item(item)
     # i.remove_item(item)
 
-    i.wallet += 5
-    i.wallet += Wallet(5)
+    i.currency += 5
+    i.currency += Currency(5)
 
-    i.wallet -= 5
-    i.wallet -= Wallet(5)
+    i.currency -= 5
+    i.currency -= Currency(5)
 
     i.add_materials(material)
     i.remove_materials(material)

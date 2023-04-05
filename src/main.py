@@ -3,10 +3,10 @@ from dataclasses import dataclass
 from typing import List, Optional
 import random
 
+from currency import Currency
 from inventory import Inventory
 from item import ItemManager, ItemName
-from loot import LootManager, LootTable, Monster
-from wallet import Wallet
+from loot import LootManager, Monster
 
 
 @dataclass
@@ -25,20 +25,17 @@ class Character:
 
 if __name__ == '__main__':
 
-    def loot_for_level(creature: Monster, level: int) -> List[ItemName]:
-        return [LootManager.get_loot_table_fm_monster_name(creature).loot for _ in range(level)]
-
     def random_encounter(level: int, inventory: Inventory, besdiary: Optional[List[Monster]] = list(Monster)) -> None:
 
-        def _print_helper_encounter(level: int, creature: Monster, items: List[ItemName], wallet: Wallet) -> None:
+        def _print_helper_encounter(level: int, creature: Monster, items: List[ItemName], currency: Currency) -> None:
             print(f"You encounter a level ({level}) {creature}!")
             print(f"You defeat the creature!")
             print(f"loot[ITEM]: {', '.join(items)}")
-            print(f"loot[COIN]: {wallet.balance} copper.")
+            print(f"loot[COIN]: {currency.wallet}")
             print()
 
         _loot_collected = []
-        _money_collected = Wallet(0)
+        _money_collected = Currency()
         mob = random.choice(besdiary)
 
         for _ in range(level):
@@ -46,7 +43,7 @@ if __name__ == '__main__':
             loot_inv = loot_table.inventory
             inventory += loot_inv
             _loot_collected.extend(loot_inv.get_all_items())
-            _money_collected += loot_inv.wallet
+            _money_collected += loot_inv.currency
 
         _print_helper_encounter(level, mob, _loot_collected, _money_collected)
 

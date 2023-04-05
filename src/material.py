@@ -169,12 +169,12 @@ def select_materials_by_quality(quality: Quality) -> List[Material]:
 
 if __name__ == '__main__':
 
-    import CopyToClipBoard
+    import _CopyToClipBoard
 
     name = "test"
     quality = "common"
     # name = []
     # quality = []
 
-    CopyToClipBoard.materials(name, quality)
-    CopyToClipBoard.material_type(name)
+    _CopyToClipBoard.materials(name, quality)
+    _CopyToClipBoard.material_type(name)

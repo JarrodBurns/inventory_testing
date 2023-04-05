@@ -7,10 +7,10 @@ import random
 import textwrap
 
 from access_wrapper import AccessWrapper
+from currency import Currency
 from material import Material, MaterialType, MATERIALS
 from quality import Quality
 from tag import Tag
-from wallet import Wallet
 
 
 class ItemName(str, Enum):
@@ -71,7 +71,7 @@ class Item:
         name    = f"{self.name.value} ({self.quality.name})"
         desc    = self.description
         tags    = ", ".join(self.tags)
-        value   = str(Wallet(self.value)._color_up())
+        value   = str(Currency(self.value).wallet)
         weight  = f"{self.weight} grams"
         scrap   = ", ".join(mat.name for mat in self.composition)
         lines   = [
@@ -278,8 +278,8 @@ ITEMS = {
     # Treasure
     ItemName.GOBLET_OF_BRASS    : Item(
         name=ItemName.GOBLET_OF_BRASS,
-        weight=4,
-        value=2_300,
+        weight=13,
+        value=1_800,
         description="A simple goblet made of brass, probably used for drinking.",
         tags=[Tag.DINING, Tag.ACCESSORY, Tag.TREASURE],
         quality=Quality.POOR,
@@ -290,7 +290,7 @@ ITEMS = {
     ItemName.SILVER_TOOTH_PICK  : Item(
         name=ItemName.SILVER_TOOTH_PICK,
         weight=1,
-        value=6_200,
+        value=5_400,
         description="A small silver toothpick, probably used to clean teeth after meals.",
         tags=[Tag.DINING, Tag.ACCESSORY, Tag.TREASURE],
         quality=Quality.COMMON,
@@ -300,7 +300,7 @@ ITEMS = {
     ),
     ItemName.JADE_EARRING       : Item(
         name=ItemName.JADE_EARRING,
-        weight=2,
+        weight=8,
         value=8_000,
         description="A single jade earring, probably worn as an accessory.",
         tags=[Tag.JEWELRY, Tag.ACCESSORY, Tag.TREASURE],
@@ -311,9 +311,9 @@ ITEMS = {
     ),
     ItemName.COPPER_KETTLE      : Item(
         name=ItemName.COPPER_KETTLE,
-        weight=7,
+        weight=900,
         value=3_100,
-        description="A large copper kettle, probably used for boiling water or brewing tea.",
+        description="A small copper kettle, probably used for boiling water or brewing tea.",
         tags=[Tag.DINING, Tag.ACCESSORY, Tag.TREASURE],
         quality=Quality.POOR,
         composition=[MATERIALS[MaterialType.COPPER]],
@@ -322,7 +322,7 @@ ITEMS = {
     ),
     ItemName.BRONZE_MIRROR      : Item(
         name=ItemName.BRONZE_MIRROR,
-        weight=5,
+        weight=2_300,
         value=9_200,
         description="A small bronze mirror, probably used for personal grooming or vanity.",
         tags=[Tag.ACCESSORY, Tag.TREASURE],
@@ -335,7 +335,7 @@ ITEMS = {
     # Unsorted... TODO: Make a script to alphabetize these things.
     ItemName.WOVEN_BASKET: Item(
         name=ItemName.WOVEN_BASKET,
-        weight=20,
+        weight=1_150,
         value=1_200,
         description="A handcrafted basket made from woven reeds, perfect for carrying small items or as a decorative piece.",
         tags=[Tag.DECORATION, Tag.JUNK],
@@ -346,7 +346,7 @@ ITEMS = {
     ),
     ItemName.SPIDER_SILK_ROPE: Item(
         name=ItemName.SPIDER_SILK_ROPE,
-        weight=4,
+        weight=250,
         value=7_500,
         description="A sturdy rope made from the silk of a giant spider. The silk is incredibly strong and durable, able to support even heavy weights without breaking.",
         tags=[Tag.WEAVING, Tag.EQUIPMENT],
@@ -368,7 +368,7 @@ ITEMS = {
     ),
     ItemName.RUNED_STONE: Item(
         name=ItemName.RUNED_STONE,
-        weight=10,
+        weight=450,
         value=9_500,
         description="A smooth stone etched with mysterious runes, believed to hold magical properties.",
         tags=[Tag.TREASURE, Tag.MAGIC],
@@ -379,7 +379,7 @@ ITEMS = {
     ),
     ItemName.SMOKED_FISH: Item(
         name=ItemName.SMOKED_FISH,
-        weight=7,
+        weight=75,
         value=800,
         description="A small fish that has been smoked over a fire, providing a flavorful and long-lasting source of sustenance.",
         tags=[Tag.FOOD],
