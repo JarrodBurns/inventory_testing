@@ -36,6 +36,7 @@ def print_encounter_success(creature_inventory: Inventory) -> None:
 
 def random_encounter(level: int, player_inventory: Inventory, besdiary: Optional[List[Monster]] = list(Monster)) -> None:
 
+    # Combat setup
     creature = random.choice(besdiary)
     creature_inventory = LootManager.Tables[creature].encounter_by_level(5)
 
@@ -43,7 +44,7 @@ def random_encounter(level: int, player_inventory: Inventory, besdiary: Optional
 
     # Combat ...
 
-    # Combat completed. Success!
+    # Combat success!
     player_inventory += creature_inventory
     print_encounter_success(creature_inventory)
 
