@@ -135,30 +135,30 @@ class Material:
 
 
 MATERIALS = {
-    MaterialType.ALUMINUM   : Material(MaterialType.ALUMINUM, Quality.COMMON),
-    MaterialType.BONE       : Material(MaterialType.BONE, Quality.COMMON),
-    MaterialType.BRASS      : Material(MaterialType.BRASS, Quality.COMMON),
-    MaterialType.BRONZE     : Material(MaterialType.BRONZE, Quality.COMMON),
-    MaterialType.COPPER     : Material(MaterialType.COPPER, Quality.COMMON),
-    MaterialType.CORK       : Material(MaterialType.CORK, Quality.COMMON),
-    MaterialType.ESSENCE    : Material(MaterialType.ESSENCE, Quality.UNCOMMON),
-    MaterialType.GLASS      : Material(MaterialType.GLASS, Quality.COMMON),
-    MaterialType.GRAPHITE   : Material(MaterialType.GRAPHITE, Quality.COMMON),
-    MaterialType.FIBER      : Material(MaterialType.FIBER, Quality.COMMON),
-    MaterialType.FLINT      : Material(MaterialType.FLINT, Quality.COMMON),
-    MaterialType.INK        : Material(MaterialType.INK, Quality.COMMON),
-    MaterialType.IRON       : Material(MaterialType.IRON, Quality.COMMON),
-    MaterialType.JADE       : Material(MaterialType.JADE, Quality.COMMON),
-    MaterialType.ORGANIC    : Material(MaterialType.ORGANIC, Quality.COMMON),
-    MaterialType.PAPER      : Material(MaterialType.PAPER, Quality.COMMON),
-    MaterialType.PLASTIC    : Material(MaterialType.PLASTIC, Quality.COMMON),
-    MaterialType.POISON     : Material(MaterialType.POISON, Quality.UNCOMMON),
-    MaterialType.RUBBER     : Material(MaterialType.RUBBER, Quality.COMMON),
-    MaterialType.SILVER     : Material(MaterialType.SILVER, Quality.COMMON),
-    MaterialType.SPIDER_SILK: Material(MaterialType.SPIDER_SILK, Quality.UNCOMMON),
-    MaterialType.STONE      : Material(MaterialType.STONE, Quality.COMMON),
-    MaterialType.STEEL      : Material(MaterialType.STEEL, Quality.UNCOMMON),
-    MaterialType.WOOD       : Material(MaterialType.WOOD, Quality.COMMON),
+    MaterialType.ALUMINUM   : Material(MaterialType.ALUMINUM,       Quality.COMMON),
+    MaterialType.BONE       : Material(MaterialType.BONE,           Quality.COMMON),
+    MaterialType.BRASS      : Material(MaterialType.BRASS,          Quality.COMMON),
+    MaterialType.BRONZE     : Material(MaterialType.BRONZE,         Quality.COMMON),
+    MaterialType.COPPER     : Material(MaterialType.COPPER,         Quality.COMMON),
+    MaterialType.CORK       : Material(MaterialType.CORK,           Quality.COMMON),
+    MaterialType.ESSENCE    : Material(MaterialType.ESSENCE,        Quality.UNCOMMON),
+    MaterialType.GLASS      : Material(MaterialType.GLASS,          Quality.COMMON),
+    MaterialType.GRAPHITE   : Material(MaterialType.GRAPHITE,       Quality.COMMON),
+    MaterialType.FIBER      : Material(MaterialType.FIBER,          Quality.COMMON),
+    MaterialType.FLINT      : Material(MaterialType.FLINT,          Quality.COMMON),
+    MaterialType.INK        : Material(MaterialType.INK,            Quality.COMMON),
+    MaterialType.IRON       : Material(MaterialType.IRON,           Quality.COMMON),
+    MaterialType.JADE       : Material(MaterialType.JADE,           Quality.COMMON),
+    MaterialType.ORGANIC    : Material(MaterialType.ORGANIC,        Quality.COMMON),
+    MaterialType.PAPER      : Material(MaterialType.PAPER,          Quality.COMMON),
+    MaterialType.PLASTIC    : Material(MaterialType.PLASTIC,        Quality.COMMON),
+    MaterialType.POISON     : Material(MaterialType.POISON,         Quality.UNCOMMON),
+    MaterialType.RUBBER     : Material(MaterialType.RUBBER,         Quality.COMMON),
+    MaterialType.SILVER     : Material(MaterialType.SILVER,         Quality.COMMON),
+    MaterialType.SPIDER_SILK: Material(MaterialType.SPIDER_SILK,    Quality.UNCOMMON),
+    MaterialType.STONE      : Material(MaterialType.STONE,          Quality.COMMON),
+    MaterialType.STEEL      : Material(MaterialType.STEEL,          Quality.UNCOMMON),
+    MaterialType.WOOD       : Material(MaterialType.WOOD,           Quality.COMMON),
 
 }
 
@@ -177,4 +177,4 @@ if __name__ == '__main__':
     # quality = []
 
     _CopyToClipBoard.materials(name, quality)
-    _CopyToClipBoard.material_type(name)
+    # _CopyToClipBoard.material_type(name)

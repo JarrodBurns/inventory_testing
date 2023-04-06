@@ -22,11 +22,12 @@ class Wallet(NamedTuple):
 
     def __str__(self):
         values = [
-            f"{getattr(self, denomination)} {denomination}"
+            f"{getattr(self, denomination.lower())} {denomination}"
             for denomination
-            in [member.name.lower() for member in CurrencyDenomination]
-            if getattr(self, denomination)
+            in (member.value for member in CurrencyDenomination)
+            if getattr(self, denomination.lower())
         ]
+
         return ", ".join(values) or "Worthless..."
 
 
@@ -102,9 +103,3 @@ if __name__ == '__main__':
     # w -= 2556
 
     # w.debit_funds(2556)
-
-    # for x in CurrencyDenomination:
-    print(list(CurrencyDenomination))
-
-    c = [member.name.lower() for member in CurrencyDenomination]
-    print(c)

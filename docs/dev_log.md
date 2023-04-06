@@ -11,10 +11,19 @@ LootSimlator is ...
 
 ## Notes
 
+## Bugs
+- `Item.ascii_art` Codec errror occurs when using NativePython build at work machine. THe issue could be due to the way the build system is set up, but it probably makes sense to check for the error and replace the characters if necessary as they do come from the extended ascii table.
+
 
 ## Dependencies
 - Pytest
 - Pyperclip
+
+## Idea Farm
+- Short rest
+- Long rest
+- Sanity
+
 
 ## Module TODO
 
@@ -51,6 +60,9 @@ LootSimlator is ...
 
 ### Loot
 - [ ] `encounter_by_level code can be reduced by defining __add__`[^1]
+
+
+
 
 ##### Footnotes
 [^1]: `return sum([self.inventory for _ in range(level)], Inventory())`

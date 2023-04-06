@@ -44,7 +44,7 @@ class ItemName(str, Enum):
     SILVER_TOOTH_PICK   = "Silver Tooth Pick"
 
 
-@dataclass
+@dataclass(frozen=True)
 class Item:
     name        : ItemName
     weight      : int   # grams

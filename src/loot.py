@@ -18,7 +18,7 @@ class Monster(str, Enum):
     TROLL           = "Troll"
 
 
-@dataclass
+@dataclass(frozen=True)
 class LootTable:
     creature    : Monster
     weights     : List[int] = field(default_factory=list)
