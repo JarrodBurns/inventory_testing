@@ -442,8 +442,6 @@ class ItemManager:
 
 if __name__ == '__main__':
 
-    from pprint import pprint as pprint
-
     # Accessing Items (let me count the ways...)
     ItemManager.Item.TOOLBOX.scrap
     ItemManager.Item[ItemName.TOOLBOX].scrap
