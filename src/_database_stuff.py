@@ -66,42 +66,42 @@ def create_tags(tags: list[Tag]) -> None:
             session.add(TagModel(name=tag))
 
 
-# def get_or_create_quality(quality_name, session) -> None:
-#     """
-#     Query the database and create tag entries which do not exist
-#     """
+def get_or_create_quality(quality_name) -> None:
+    """
+    Query the database and create tag entries which do not exist
+    """
 
-#     # with session_scope() as session:
+    with session_scope() as session:
 
-#     quality = session.query(QualityModel).filter(QualityModel.name == quality_name.value).first()
+        quality = session.query(QualityModel).filter(QualityModel.name == quality_name.value).first()
 
-#     if quality:
-#         print(f"Quality '{quality_name}' has id '{quality.id}'")
-#         # return quality
-#     else:
-#         print(f"No quality found with name '{quality_name}'")
+        if quality:
+            print(f"Quality '{quality_name}' has id '{quality.id}'")
+            # return quality
+        else:
+            print(f"No quality found with name '{quality_name}'")
 
-#         session.add(QualityModel(name=quality_name))
-#         session.flush()
+            session.add(QualityModel(name=quality_name))
+            session.flush()
 
 
-# def get_or_create_tag(tag_name: Tag, session) -> None:
-#     """
-#     Query the database and create tag entries which do not exist
-#     """
+def get_or_create_tag(tag_name: Tag) -> None:
+    """
+    Query the database and create tag entries which do not exist
+    """
 
-#     # with session_scope() as session:
+    with session_scope() as session:
 
-#     tag = session.query(TagModel).filter(TagModel.name == tag_name.value).first()
+        tag = session.query(TagModel).filter(TagModel.name == tag_name.value).first()
 
-#     if tag:
-#         print(f"tag '{tag_name}' has id '{tag.id}'")
-#         # return tag
-#     else:
-#         print(f"No tag found with name '{tag_name}'")
+        if tag:
+            print(f"tag '{tag_name}' has id '{tag.id}'")
+            # return tag
+        else:
+            print(f"No tag found with name '{tag_name}'")
 
-#         session.add(QualityModel(name=tag_name.value))
-#         session.flush()
+            session.add(QualityModel(name=tag_name.value))
+            session.flush()
 
 
 if __name__ == '__main__':
@@ -134,37 +134,38 @@ if __name__ == '__main__':
 
     # with session_scope() as session:
 
-    #     for i in items:
-    #         # create_tags(i.tags)
-    #         item = ItemModel(name=i.name, quality=get_or_create_quality(i.quality, session))
-    #         # print(i)
+    for i in items:
+        # create_tags(i.tags)
+        item = ItemModel(name=i.name, quality=get_or_create_quality(i.quality))
+        # print(i)
 
-    #         for t in i.tags:
-    #             # item.tags.append(TagModel(name=t))
-    #             get_or_create_tag(t, session)
+        for t in i.tags:
+            # item.tags.append(TagModel(name=t))
+            get_or_create_tag(t)
 
-    # session.add(item)
+            # session.add(item)
 
 # qualities
 
-    with session_scope() as session:
-        quality = session.query(QualityModel).filter(QualityModel.name == "Uncommon").first()
-        if not quality:
-            quality = QualityModel(name="Uncommon")
-            session.add(quality)
+
+with session_scope() as session:
+    quality = session.query(QualityModel).filter(QualityModel.name == "Uncommon").first()
+    if not quality:
+        quality = QualityModel(name="Uncommon")
+        session.add(quality)
+        session.flush()
+
+    tag_names = ["Potion", "Health"]
+    tags = session.query(TagModel).filter(TagModel.name.in_(tag_names)).all()
+    existing_tags = set(tag.name for tag in tags)
+
+    for tag_name in tag_names:
+        if tag_name not in existing_tags:
+            tag = TagModel(name=tag_name)
+            session.add(tag)
             session.flush()
+            tags.append(tag)
 
-        tag_names = ["Potion", "Health"]
-        tags = session.query(TagModel).filter(TagModel.name.in_(tag_names)).all()
-        existing_tags = set(tag.name for tag in tags)
-
-        for tag_name in tag_names:
-            if tag_name not in existing_tags:
-                tag = TagModel(name=tag_name)
-                session.add(tag)
-                session.flush()
-                tags.append(tag)
-
-        item = ItemModel(name="Health Potion", quality=quality, tags=tags)
-        session.add(item)
-        session.commit()
+    item = ItemModel(name="Health Potion", quality=quality, tags=tags)
+    session.add(item)
+    session.commit()

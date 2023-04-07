@@ -6,7 +6,7 @@ from typing import NamedTuple, Union
 
 class CurrencyDenomination(str, Enum):
     """
-    order: decending
+    order: descending
     scale: 100x
     """
     GOLD   = "Gold"

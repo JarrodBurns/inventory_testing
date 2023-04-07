@@ -48,7 +48,7 @@ class ItemName(str, Enum):
 class Item:
     name        : ItemName
     weight      : int   # grams
-    value       : int   # Indicitive of average cost to purchase in the US. Represented in pennies.
+    value       : int   # Indicative of average cost to purchase in the US. Represented in pennies.
     description : str
     quality     : Quality
     craftable   : bool
@@ -336,7 +336,7 @@ ITEMS = {
     ItemName.WOVEN_BASKET: Item(
         name=ItemName.WOVEN_BASKET,
         weight=1_150,
-        value=1_200,
+        value=2_000,
         description="A handcrafted basket made from woven reeds, perfect for carrying small items or as a decorative piece.",
         tags=[Tag.DECORATION, Tag.JUNK],
         quality=Quality.COMMON,
@@ -405,6 +405,7 @@ TAG_INDEX = _tag_index()
 
 
 class ItemManager:
+
     ITEMS       : Dict[ItemName, Item] = ITEMS
     TAG_INDEX   : Dict[Tag, List[ItemName]] = TAG_INDEX
 
@@ -413,31 +414,37 @@ class ItemManager:
 
     @classmethod
     def get_item_fm_name(cls, item_name: ItemName) -> Item:
-        try:
-            return cls.ITEMS[item_name]
 
-        except KeyError:
-            return None
+        if item := cls.ITEMS.get(item_name, None):
+            return item
+
+        raise IndexError(f"No items found for query '{item_name}'.")
 
     @classmethod
     def get_random_item_fm_tag(cls, tag: Tag) -> Item:
-        try:
-            return cls.ITEMS[random.choice(cls.TAG_INDEX[tag])]
 
-        except IndexError:
-            return None
+        if item := cls.TAG_INDEX.get(tag, []):
+            return cls.ITEMS[random.choice(item)]
+
+        raise IndexError(f"No items found for query '{tag}'.")
 
     @classmethod
     def get_random_item_name_fm_tag(cls, tag: Tag) -> ItemName:
-        try:
-            return random.choice(cls.TAG_INDEX[tag])
 
-        except IndexError:
-            return None
+        if item_name := cls.TAG_INDEX.get(tag, []):
+            return random.choice(item_name)
+
+        raise IndexError(f"No items found for query '{tag}'.")
 
     @classmethod
     def get_random_item(cls) -> Item:
-        return cls.ITEMS[random.choice(list(ItemName))]
+
+        if not cls.ITEMS:
+            raise AttributeError(
+                f"{cls.__name__} has no items. Please make sure to populate the ITEMS dictionary."
+            )
+
+        return cls.ITEMS[random.choice(list(cls.ITEMS.keys()))]
 
 
 if __name__ == '__main__':
@@ -450,8 +457,8 @@ if __name__ == '__main__':
     ITEMS[ItemName.TOOLBOX].scrap
     ItemManager.ITEMS[ItemName.TOOLBOX].scrap
 
-    print(ItemManager.Item.TOOLBOX.ascii_art())
-    print(ItemManager.TagIndex.FOOD)
+    # print(ItemManager.Item.TOOLBOX.ascii_art())
+    # print(ItemManager.TagIndex.FOOD)
 
     # print(TAG_INDEX[Tag.POCKET_LITTER])
     # print(TAG_INDEX[Tag.JUNK])
@@ -460,6 +467,9 @@ if __name__ == '__main__':
 
     # print(ITEMS[ItemName.TOOLBOX].ascii_art())
     # print(ItemManager.get_item_fm_name(ItemName.TOOLBOX).ascii_art())
-    # print(ItemManager.get_item_fm_name(ItemName.TOOLBOX))
-    # print(ItemManager.get_random_item_fm_tag(Tag.JUNK))
+    # print(ItemManager.get_item_fm_name(ItemName.TOOLBOX).ascii_art())
+    # print(ItemManager.get_random_item_fm_tag(Tag.JUNK).ascii_art())
+    # print(ItemManager.get_random_item_name_fm_tag(Tag.TREASURE))
+
+    # ItemManager.ITEMS = None
     # print(ItemManager.get_random_item())

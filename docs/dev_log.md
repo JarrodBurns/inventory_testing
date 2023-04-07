@@ -13,6 +13,7 @@ LootSimlator is ...
 
 ## Bugs
 - `Item.ascii_art` Codec errror occurs when using NativePython build at work machine. THe issue could be due to the way the build system is set up, but it probably makes sense to check for the error and replace the characters if necessary as they do come from the extended ascii table.
+- It may be prudent to optimize our enums later.
 
 
 ## Dependencies
@@ -30,10 +31,10 @@ LootSimlator is ...
 ### Inventory
 - [X] Inventory Object, should contain: `Item`, `Material`, and `Currency`
 - [X] add logic to delete materials from dict
+- [X] Consider: add and remove methods for the `.wallet`
 - [ ] `__iadd__` logic needs testing and probably a refactor 
 - [ ] `Inventory` `__str__` should be `__repr__`
 - [ ] Unit tests, hand tests are too cumbersome here, I think.
-- [ ] Consider: add and remove methods for the `.wallet`
 - [ ] `CurrencyAmount` getter for `.wallet`
 - [ ] subtracting from .balance passes silently. (Don't allow negative balances)
 
@@ -45,7 +46,7 @@ LootSimlator is ...
 
 ### Item
 - [ ] Consider: raising error for `random_fm_tag` and `get_item` over returning None
-- [ ] Scrub weights and values down to TRASH ("Switch to pounds?")
+- [ ] Scrub weights and values down to TRASH ("Switch to pounds?") consider economy
 
 ### Monster
 - [ ] Rename to MonsterName
@@ -66,3 +67,12 @@ LootSimlator is ...
 
 ##### Footnotes
 [^1]: `return sum([self.inventory for _ in range(level)], Inventory())`
+
+
+
+class Inventory:
+
+    def __init__(self):
+        self.items      : defaultdict[ItemName, int] = defaultdict(int)
+        self.currency   : Currency = Currency()
+        self.materials  : Dict[MaterialType, Material] = {}
