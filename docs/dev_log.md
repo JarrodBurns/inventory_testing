@@ -2,9 +2,9 @@
 LootSimlator is ...
 
 ## Tasks
-- [ ] Wallet Object, takes in funds distributes them through the scales
-- [ ] Function to sort by Rarity and Tag
-- [ ] Custom errors for Inventory.remove_material and Material dunder methods
+- [X] Wallet Object, takes in funds distributes them through the scales
+- [X] Function to sort by Rarity and Tag
+- [X] Custom errors for Inventory.remove_material and Material dunder methods
 - [ ] Look into adding negative numbers to material and see if it breaks
 - [ ] Some functions could return bool and error code for custom errors
 - [ ] Save inventory data to toml
@@ -15,6 +15,21 @@ LootSimlator is ...
 - `Item.ascii_art` Codec errror occurs when using NativePython build at work machine. THe issue could be due to the way the build system is set up, but it probably makes sense to check for the error and replace the characters if necessary as they do come from the extended ascii table.
 - It may be prudent to optimize our enums later.
 
+## ideas:
+```
+- Inventory
+    - Materials
+    - Wallet
+    - Equipment
+        - Weapons
+        - Apparel
+    - Consumables
+        - Food
+        - Potions
+
+```
+
+- omni wrapper for Query.Item.TOOLBOX, Query.ItemName.TOOLBOX, Query.Monster.loot, Query.Random, etc
 
 ## Dependencies
 - Pytest
@@ -27,6 +42,7 @@ LootSimlator is ...
 
 
 ## Module TODO
+- [ ] Consider renaming quantity to amount, otherwise it may lead to confusion
 
 ### Inventory
 - [X] Inventory Object, should contain: `Item`, `Material`, and `Currency`
@@ -47,6 +63,7 @@ LootSimlator is ...
 ### Item
 - [ ] Consider: raising error for `random_fm_tag` and `get_item` over returning None
 - [ ] Scrub weights and values down to TRASH ("Switch to pounds?") consider economy
+- [ ] Consider rename composition to materials
 
 ### Monster
 - [ ] Rename to MonsterName
@@ -58,21 +75,17 @@ LootSimlator is ...
 
 ### Material
 - [ ] Consider "always expecting list of material bs" overload for str
+- [ ] Consider: Create MaterialQuantity and remove quantity from material
 
 ### Loot
 - [ ] `encounter_by_level code can be reduced by defining __add__`[^1]
+
+
+### db_entries
+- [ ] finish doing this.
 
 
 
 
 ##### Footnotes
 [^1]: `return sum([self.inventory for _ in range(level)], Inventory())`
-
-
-
-class Inventory:
-
-    def __init__(self):
-        self.items      : defaultdict[ItemName, int] = defaultdict(int)
-        self.currency   : Currency = Currency()
-        self.materials  : Dict[MaterialType, Material] = {}

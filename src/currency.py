@@ -1,17 +1,8 @@
 
 from dataclasses import dataclass
-from enum import Enum
 from typing import NamedTuple, Union
 
-
-class CurrencyDenomination(str, Enum):
-    """
-    order: descending
-    scale: 100x
-    """
-    GOLD   = "Gold"
-    SILVER = "Silver"
-    COPPER = "Copper"
+from enums import CurrencyDenomination
 
 
 class Wallet(NamedTuple):

@@ -1,21 +1,12 @@
 
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Dict, List
 import random
 
 from access_wrapper import AccessWrapper
+from enums import ItemName, Monster, Tag
 from inventory import Inventory
-from item import ItemManager, ItemName
-from tag import Tag
-
-
-class Monster(str, Enum):
-    GIANT_SPIDER    = "Giant Spider"
-    GOBLIN          = "Goblin"
-    GOBLIN_SHAMAN   = "Goblin Shaman"
-    OGRE            = "Ogre"
-    TROLL           = "Troll"
+from item import ItemManager
 
 
 @dataclass(frozen=True)
@@ -167,3 +158,25 @@ if __name__ == '__main__':
     # i = lt.encounter_by_level(5)
 
     print(LootManager.Tables[Monster.GOBLIN].encounter_by_level(5))
+
+    # Monster.TROLL: LootTable(
+    #     creature=Monster.TROLL,
+    #     weights=[4, 10, 15, 15, 20, 36],
+    #     all_loot=[
+    #         Tag.TREASURE,
+    #         ItemName.TOOLBOX,
+    #         Tag.DECORATION,
+    #         Tag.CLOTHING,
+    #         Tag.TOOL,
+    #         Tag.JUNK
+    #     ]
+    # ),
+
+    # print(ItemManager.get_random_item_name_fm_tag(Tag.))
+
+    junk = ItemManager.TagIndex.JUNK
+    print(random.choice(junk))
+
+    all_loot = [ItemName.TOOLBOX, *junk]
+
+    print(all_loot)

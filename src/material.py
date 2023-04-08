@@ -1,36 +1,8 @@
 
 from dataclasses import dataclass
-from enum import Enum
 from typing import List, Union
 
-from quality import Quality
-
-
-class MaterialType(str, Enum):
-    ALUMINUM    = "Aluminum"
-    BONE        = "Bone"
-    BRASS       = "Brass"
-    BRONZE      = "Bronze"
-    COPPER      = "Copper"
-    CORK        = "Cork"
-    ESSENCE     = "Essence"
-    GLASS       = "Glass"
-    GRAPHITE    = "Graphite"
-    FIBER       = "Fiber"
-    FLINT       = "Flint"
-    INK         = "Ink"
-    IRON        = "Iron"
-    JADE        = "Jade"
-    ORGANIC     = "Organic"
-    PAPER       = "Paper"
-    PLASTIC     = "Plastic"
-    POISON      = "Poison"
-    RUBBER      = "Rubber"
-    SILVER      = "Silver"
-    SPIDER_SILK = "Spider Silk"
-    STEEL       = "Steel"
-    STONE       = "Stone"
-    WOOD        = "Wood"
+from enums import MaterialType, Quality
 
 
 @dataclass
@@ -42,8 +14,8 @@ class Material:
     quality: Quality
     quantity: int = 0
 
-    def __str__(self) -> str:
-        return f"|  ({self.quantity}) {self.name} [{self.quality}]"
+    # def __str__(self) -> str:
+    #     return f"|  ({self.quantity}) {self.name} [{self.quality}]"
 
     def __bool__(self) -> bool:
         return self.quantity > 0
@@ -135,30 +107,30 @@ class Material:
 
 
 MATERIALS = {
-    MaterialType.ALUMINUM   : Material(MaterialType.ALUMINUM,       Quality.COMMON),
-    MaterialType.BONE       : Material(MaterialType.BONE,           Quality.COMMON),
-    MaterialType.BRASS      : Material(MaterialType.BRASS,          Quality.COMMON),
-    MaterialType.BRONZE     : Material(MaterialType.BRONZE,         Quality.COMMON),
-    MaterialType.COPPER     : Material(MaterialType.COPPER,         Quality.COMMON),
-    MaterialType.CORK       : Material(MaterialType.CORK,           Quality.COMMON),
-    MaterialType.ESSENCE    : Material(MaterialType.ESSENCE,        Quality.UNCOMMON),
-    MaterialType.GLASS      : Material(MaterialType.GLASS,          Quality.COMMON),
-    MaterialType.GRAPHITE   : Material(MaterialType.GRAPHITE,       Quality.COMMON),
-    MaterialType.FIBER      : Material(MaterialType.FIBER,          Quality.COMMON),
-    MaterialType.FLINT      : Material(MaterialType.FLINT,          Quality.COMMON),
-    MaterialType.INK        : Material(MaterialType.INK,            Quality.COMMON),
-    MaterialType.IRON       : Material(MaterialType.IRON,           Quality.COMMON),
-    MaterialType.JADE       : Material(MaterialType.JADE,           Quality.COMMON),
-    MaterialType.ORGANIC    : Material(MaterialType.ORGANIC,        Quality.COMMON),
-    MaterialType.PAPER      : Material(MaterialType.PAPER,          Quality.COMMON),
-    MaterialType.PLASTIC    : Material(MaterialType.PLASTIC,        Quality.COMMON),
-    MaterialType.POISON     : Material(MaterialType.POISON,         Quality.UNCOMMON),
-    MaterialType.RUBBER     : Material(MaterialType.RUBBER,         Quality.COMMON),
-    MaterialType.SILVER     : Material(MaterialType.SILVER,         Quality.COMMON),
-    MaterialType.SPIDER_SILK: Material(MaterialType.SPIDER_SILK,    Quality.UNCOMMON),
-    MaterialType.STONE      : Material(MaterialType.STONE,          Quality.COMMON),
-    MaterialType.STEEL      : Material(MaterialType.STEEL,          Quality.UNCOMMON),
-    MaterialType.WOOD       : Material(MaterialType.WOOD,           Quality.COMMON),
+    MaterialType.ALUMINUM   : Material(MaterialType.ALUMINUM, Quality.COMMON),
+    MaterialType.BONE       : Material(MaterialType.BONE, Quality.COMMON),
+    MaterialType.BRASS      : Material(MaterialType.BRASS, Quality.COMMON),
+    MaterialType.BRONZE     : Material(MaterialType.BRONZE, Quality.COMMON),
+    MaterialType.COPPER     : Material(MaterialType.COPPER, Quality.COMMON),
+    MaterialType.CORK       : Material(MaterialType.CORK, Quality.COMMON),
+    MaterialType.ESSENCE    : Material(MaterialType.ESSENCE, Quality.UNCOMMON),
+    MaterialType.GLASS      : Material(MaterialType.GLASS, Quality.COMMON),
+    MaterialType.GRAPHITE   : Material(MaterialType.GRAPHITE, Quality.COMMON),
+    MaterialType.FIBER      : Material(MaterialType.FIBER, Quality.COMMON),
+    MaterialType.FLINT      : Material(MaterialType.FLINT, Quality.COMMON),
+    MaterialType.INK        : Material(MaterialType.INK, Quality.COMMON),
+    MaterialType.IRON       : Material(MaterialType.IRON, Quality.COMMON),
+    MaterialType.JADE       : Material(MaterialType.JADE, Quality.COMMON),
+    MaterialType.ORGANIC    : Material(MaterialType.ORGANIC, Quality.COMMON),
+    MaterialType.PAPER      : Material(MaterialType.PAPER, Quality.COMMON),
+    MaterialType.PLASTIC    : Material(MaterialType.PLASTIC, Quality.COMMON),
+    MaterialType.POISON     : Material(MaterialType.POISON, Quality.UNCOMMON),
+    MaterialType.RUBBER     : Material(MaterialType.RUBBER, Quality.COMMON),
+    MaterialType.SILVER     : Material(MaterialType.SILVER, Quality.COMMON),
+    MaterialType.SPIDER_SILK: Material(MaterialType.SPIDER_SILK, Quality.UNCOMMON),
+    MaterialType.STONE      : Material(MaterialType.STONE, Quality.COMMON),
+    MaterialType.STEEL      : Material(MaterialType.STEEL, Quality.UNCOMMON),
+    MaterialType.WOOD       : Material(MaterialType.WOOD, Quality.COMMON),
 
 }
 
@@ -176,5 +148,9 @@ if __name__ == '__main__':
     # name = []
     # quality = []
 
-    _CopyToClipBoard.materials(name, quality)
+    # _CopyToClipBoard.materials(name, quality)
     # _CopyToClipBoard.material_type(name)
+
+    # print(MATERIALS[MaterialType.BONE].name)
+    # mats = [MATERIALS[m] for m in [MaterialType.STEEL, MaterialType.WOOD]]
+    # print(type(mats))

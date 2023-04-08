@@ -3,9 +3,8 @@ from dataclasses import dataclass
 from typing import List, Optional
 import random
 
-from currency import Currency
 from inventory import Inventory
-from item import ItemManager, ItemName
+from item import ItemManager
 from loot import LootManager, Monster
 
 
@@ -34,10 +33,10 @@ def print_encounter_success(creature_inventory: Inventory) -> None:
     print()
 
 
-def random_encounter(level: int, player_inventory: Inventory, besdiary: Optional[List[Monster]] = list(Monster)) -> None:
+def random_encounter(level: int, player_inventory: Inventory, bestiary: Optional[List[Monster]] = list(Monster)) -> None:
 
     # Combat setup
-    creature = random.choice(besdiary)
+    creature = random.choice(bestiary)
     creature_inventory = LootManager.Tables[creature].encounter_by_level(5)
 
     print_encounter_start(level, creature)

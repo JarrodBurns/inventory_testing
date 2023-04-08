@@ -4,8 +4,8 @@ from typing import Dict, List, Union
 
 from access_wrapper import AccessWrapper
 from currency import Currency
-from item import ItemName
-from material import Material, MaterialType
+from enums import ItemName, MaterialType
+from material import Material
 
 
 class Inventory:
