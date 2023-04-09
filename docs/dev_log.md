@@ -12,7 +12,7 @@ LootSimlator is ...
 ## Notes
 
 ## Bugs
-- `Item.ascii_art` Codec errror occurs when using NativePython build at work machine. THe issue could be due to the way the build system is set up, but it probably makes sense to check for the error and replace the characters if necessary as they do come from the extended ascii table.
+- `Item.ascii_art` Codec error occurs when using NativePython build at work machine. THe issue could be due to the way the build system is set up, but it probably makes sense to check for the error and replace the characters if necessary as they do come from the extended ASCII table.
 - It may be prudent to optimize our enums later.
 
 ## ideas:
@@ -103,7 +103,12 @@ desired wrapper access
 - [ ] finish doing this.
 
 
-
-
 ##### Footnotes
 [^1]: `return sum([self.inventory for _ in range(level)], Inventory())`
+
+
+## Smells
+- Str enums should probably just be regular enums for computational efficiency
+- There isn't a model for `ItemName` (This may be fine, I can't decide)
+- `creature` and `monster` violate naming consistency between models and objects
+- `materials` and `composition` violate naming consistency between models and objects

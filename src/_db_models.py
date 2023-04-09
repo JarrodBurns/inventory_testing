@@ -121,6 +121,10 @@ class ItemModel(ModelBase, QueryBase):
             flavor_text=self.flavor_text
         )
 
+    @property
+    def as_itemname(self) -> ItemName:
+        return ItemName(self.name)
+
     @classmethod
     def get_fm_materialtype_random(cls, session: Session, material_type: MaterialType) -> Query["ItemModel"]:
         return (
@@ -152,7 +156,7 @@ class ItemModel(ModelBase, QueryBase):
         )
 
     @classmethod
-    def gets_fm_quality(cls, session, quality: Quality) -> Query["ItemModel"]:
+    def gets_fm_quality(cls, session: Session, quality: Quality) -> Query["ItemModel"]:
         return (
             session.query(cls)
             .filter(cls.quality.has(name=quality))
@@ -254,38 +258,39 @@ if __name__ == '__main__':
         ...
 
         # QueryBase ==============================================================
-        print(QualityModel.get_fm_name(session, Quality.COMMON))
-        print(QualityModel.get_fm_id(session, 1))
-        print(QualityModel.get_fm_random(session))
-        print(QualityModel.gets_all(session))
+        # print(QualityModel.get_fm_name(session, Quality.COMMON))
+        # print(QualityModel.get_fm_id(session, 1))
+        # print(QualityModel.get_fm_random(session))
+        # print(QualityModel.gets_all(session))
 
         # QualityModel ==============================================================
-        print(QualityModel.get_fm_name(session, Quality.POOR).as_quality)
-        print(QualityModel.get_fm_random(session).as_quality)
+        # print(QualityModel.get_fm_name(session, Quality.POOR).as_quality)
+        # print(QualityModel.get_fm_random(session).as_quality)
 
         # TagModel ==============================================================
-        print(TagModel.get_fm_name(session, Tag.JUNK).as_tag)
-        print(TagModel.get_fm_random(session).as_tag)
+        # print(TagModel.get_fm_name(session, Tag.JUNK).as_tag)
+        # print(TagModel.get_fm_random(session).as_tag)
 
         # MaterialModel ==========================================================
-        print(MaterialModel.get_fm_name(session, MaterialType.BONE).as_material)
-        print(MaterialModel.get_fm_random(session).as_material)
-        print(*[m.as_material for m in MaterialModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
+        # print(MaterialModel.get_fm_name(session, MaterialType.BONE).as_material)
+        # print(MaterialModel.get_fm_random(session).as_material)
+        # print(*[m.as_material for m in MaterialModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
 
         # ItemModel ==============================================================
-        print(ItemModel.get_fm_name(session, ItemName.TRASH).as_item.ascii_art())
-        print(ItemModel.get_fm_materialtype_random(session, MaterialType.WOOD).as_item.ascii_art())
-        print(ItemModel.get_fm_quality_random(session, Quality.UNCOMMON).as_item.ascii_art())
-        print(ItemModel.get_fm_random(session).as_item.ascii_art())
-        print(ItemModel.get_fm_tag_random(session, Tag.JUNK).as_item.ascii_art())
-        print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_materialtype(session, MaterialType.BRASS)], sep='\n')
-        print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
-        print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_tag(session, Tag.TREASURE)], sep='\n')
+        # print(ItemModel.get_fm_name(session, ItemName.TRASH).as_itemname)
+        # print(ItemModel.get_fm_name(session, ItemName.TRASH).as_item.ascii_art())
+        # print(ItemModel.get_fm_materialtype_random(session, MaterialType.WOOD).as_item.ascii_art())
+        # print(ItemModel.get_fm_quality_random(session, Quality.UNCOMMON).as_item.ascii_art())
+        # print(ItemModel.get_fm_random(session).as_item.ascii_art())
+        # print(ItemModel.get_fm_tag_random(session, Tag.JUNK).as_item.ascii_art())
+        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_materialtype(session, MaterialType.BRASS)], sep='\n')
+        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
+        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_tag(session, Tag.TREASURE)], sep='\n')
 
         # MonsterModel ===========================================================
-        print(MonsterModel.get_fm_name(session, Monster.GOBLIN).as_monster)
-        print(MonsterModel.get_fm_random(session).as_monster)
+        # print(MonsterModel.get_fm_name(session, Monster.GOBLIN).as_monster)
+        # print(MonsterModel.get_fm_random(session).as_monster)
 
         # LootTableModel =========================================================
-        print(LootTableModel.get_fm_name(session, Monster.GOBLIN).as_loottable)
-        print(LootTableModel.get_fm_random(session).as_loottable)
+        # print(LootTableModel.get_fm_name(session, Monster.GOBLIN).as_loottable)
+        # print(LootTableModel.get_fm_random(session).as_loottable)
