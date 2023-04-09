@@ -1,5 +1,5 @@
 
-from _database_stuff import ItemModel
+from _db_models import ItemModel, MaterialModel, QualityModel, TagModel
 
 
 ITEMS = (

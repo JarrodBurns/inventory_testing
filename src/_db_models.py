@@ -15,7 +15,26 @@ from material import Material
 ModelBase = SingletonModelBase.get_instance()
 
 
-class QualityModel(ModelBase):
+class QueryBase:
+
+    @classmethod
+    def get_fm_id(cls, session: Session, id: int) -> Query["QueryBase"]:
+        return session.query(cls).filter_by(id=id).first()
+
+    @classmethod
+    def get_fm_name(cls, session: Session, name: str) -> Query["QueryBase"]:
+        return session.query(cls).filter_by(name=name).first()
+
+    @classmethod
+    def get_fm_random(cls, session: Session) -> Query["QueryBase"]:
+        return session.query(cls).order_by(func.random()).first()
+
+    @classmethod
+    def gets_all(cls, session: Session) -> List[Query["QueryBase"]]:
+        return session.query(cls).all()
+
+
+class QualityModel(ModelBase, QueryBase):
     __tablename__  = "Qualities"
     id             = Column(Integer, primary_key=True)
     name           = Column(String, unique=True, nullable=False)
@@ -23,8 +42,12 @@ class QualityModel(ModelBase):
     def __repr__(self):
         return f"QualityModel(id={self.id}, name='{self.name}')"
 
+    @property
+    def as_quality(self) -> Quality:
+        return Quality(self.name)
 
-class TagModel(ModelBase):
+
+class TagModel(ModelBase, QueryBase):
     __tablename__   = 'Tags'
     id              = Column(Integer, primary_key=True)
     name            = Column(String, unique=True, nullable=False)
@@ -36,8 +59,12 @@ class TagModel(ModelBase):
     def __repr__(self):
         return f"TagModel(id={self.id}, name='{self.name}')"
 
+    @property
+    def as_tag(self) -> Tag:
+        return Tag(self.name)
 
-class MaterialModel(ModelBase):
+
+class MaterialModel(ModelBase, QueryBase):
     __tablename__   = "Materials"
     id              = Column(Integer, primary_key=True)
     name            = Column(String, unique=True, nullable=False)
@@ -49,8 +76,21 @@ class MaterialModel(ModelBase):
     def __repr__(self):
         return f"MaterialModel(id={self.id}, name='{self.name}', quality_id={self.quality_id}, quantity={self.quantity})"
 
+    @property
+    def as_material(self) -> Material:
+        return Material(name=MaterialType(self.name), quality=Quality(self.quality.name))
 
-class ItemModel(ModelBase):
+    @classmethod
+    def gets_fm_quality(cls, session: Session, quality: Quality) -> Query["MaterialModel"]:
+        return (
+            session.query(cls)
+            .join(cls.quality)
+            .filter(QualityModel.name == quality)
+            .all()
+        )
+
+
+class ItemModel(ModelBase, QueryBase):
     __tablename__   = 'Items'
     id              = Column(Integer, primary_key=True)
     name            = Column(String, unique=True, nullable=False)
@@ -82,14 +122,6 @@ class ItemModel(ModelBase):
         )
 
     @classmethod
-    def get_fm_itemname(cls, session: Session, item_name: ItemName) -> Query["ItemModel"]:
-        return (
-            session.query(cls)
-            .filter_by(name=item_name)
-            .first()
-        )
-
-    @classmethod
     def get_fm_materialtype_random(cls, session: Session, material_type: MaterialType) -> Query["ItemModel"]:
         return (
             session.query(cls)
@@ -107,16 +139,6 @@ class ItemModel(ModelBase):
             .options(selectinload(cls.quality))
             .order_by(func.random())
             .first()
-        )
-
-    @classmethod
-    def get_fm_random(cls, session: Session) -> Query["ItemModel"]:
-        return (
-            session.query(cls).filter(
-                cls.id == session.query(cls.id)
-                .order_by(func.random())
-                .limit(1).scalar_subquery()
-            ).first()
         )
 
     @classmethod
@@ -157,7 +179,7 @@ class ItemModel(ModelBase):
         )
 
 
-class MonsterModel(ModelBase):
+class MonsterModel(ModelBase, QueryBase):
     __tablename__   = "Monsters"
     id              = Column(Integer, primary_key=True)
     name            = Column(String, unique=True, nullable=False)
@@ -170,20 +192,8 @@ class MonsterModel(ModelBase):
     def as_monster(self) -> Monster:
         return Monster(self.name)
 
-    @classmethod
-    def get_fm_name(cls, session: Session) -> Query["MonsterModel"]:
-        raise NotImplementedError("Functionality not yet implemented!")
 
-    @classmethod
-    def get_fm_random(cls, session: Session) -> Query["MonsterModel"]:
-        return (
-            session.query(cls)
-            .order_by(func.random())
-            .first()
-        )
-
-
-class LootTableModel(ModelBase):
+class LootTableModel(ModelBase, QueryBase):
     __tablename__   = "LootTables"
     id              = Column(Integer, primary_key=True)
     weights         = Column(JSON, nullable=False)
@@ -208,7 +218,7 @@ class LootTableModel(ModelBase):
         return all_out
 
     @property
-    def as_loot_table(self) -> LootTable:
+    def as_loottable(self) -> LootTable:
         return LootTable(
             creature=Monster(self.monster.name),
             weights=json.loads(self.weights),
@@ -216,20 +226,12 @@ class LootTableModel(ModelBase):
         )
 
     @classmethod
-    def get_fm_monster(cls, session, monster: Monster) -> Query["LootTableModel"]:
+    def get_fm_name(cls, session, monster: Monster) -> Query["LootTableModel"]:
         return (
             session.query(cls)
             .join(cls.monster)
             .options(joinedload(cls.monster))
             .filter(MonsterModel.name == monster)
-            .first()
-        )
-
-    @classmethod
-    def get_fm_random(cls, session) -> Query["LootTableModel"]:
-        return (
-            session.query(cls)
-            .order_by(func.random())
             .first()
         )
 
@@ -250,19 +252,40 @@ if __name__ == '__main__':
 
     with session_scope() as session:
         ...
-        # ItemModel ==============================================================
-        # print(ItemModel.get_fm_itemname(session, ItemName.TRASH).as_item.ascii_art())
-        # print(ItemModel.get_fm_materialtype_random(session, MaterialType.WOOD).as_item.ascii_art())
-        # print(ItemModel.get_fm_quality_random(session, Quality.UNCOMMON).as_item.ascii_art())
-        # print(ItemModel.get_fm_random(session).as_item.ascii_art())
-        # print(ItemModel.get_fm_tag_random(session, Tag.JUNK).as_item.ascii_art())
-        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_materialtype(session, MaterialType.BRASS)], sep='\n')
-        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
-        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_tag(session, Tag.TREASURE)], sep='\n')
 
-        # LootTableModel =========================================================
-        # print(LootTableModel.get_fm_monster(session, Monster.GOBLIN).as_loot_table)
-        # print(LootTableModel.get_fm_random(session).as_loot_table)
+        # QueryBase ==============================================================
+        print(QualityModel.get_fm_name(session, Quality.COMMON))
+        print(QualityModel.get_fm_id(session, 1))
+        print(QualityModel.get_fm_random(session))
+        print(QualityModel.gets_all(session))
+
+        # QualityModel ==============================================================
+        print(QualityModel.get_fm_name(session, Quality.POOR).as_quality)
+        print(QualityModel.get_fm_random(session).as_quality)
+
+        # TagModel ==============================================================
+        print(TagModel.get_fm_name(session, Tag.JUNK).as_tag)
+        print(TagModel.get_fm_random(session).as_tag)
+
+        # MaterialModel ==========================================================
+        print(MaterialModel.get_fm_name(session, MaterialType.BONE).as_material)
+        print(MaterialModel.get_fm_random(session).as_material)
+        print(*[m.as_material for m in MaterialModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
+
+        # ItemModel ==============================================================
+        print(ItemModel.get_fm_name(session, ItemName.TRASH).as_item.ascii_art())
+        print(ItemModel.get_fm_materialtype_random(session, MaterialType.WOOD).as_item.ascii_art())
+        print(ItemModel.get_fm_quality_random(session, Quality.UNCOMMON).as_item.ascii_art())
+        print(ItemModel.get_fm_random(session).as_item.ascii_art())
+        print(ItemModel.get_fm_tag_random(session, Tag.JUNK).as_item.ascii_art())
+        print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_materialtype(session, MaterialType.BRASS)], sep='\n')
+        print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
+        print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_tag(session, Tag.TREASURE)], sep='\n')
 
         # MonsterModel ===========================================================
-        # print(MonsterModel.get_fm_random(session).as_monster)
+        print(MonsterModel.get_fm_name(session, Monster.GOBLIN).as_monster)
+        print(MonsterModel.get_fm_random(session).as_monster)
+
+        # LootTableModel =========================================================
+        print(LootTableModel.get_fm_name(session, Monster.GOBLIN).as_loottable)
+        print(LootTableModel.get_fm_random(session).as_loottable)
