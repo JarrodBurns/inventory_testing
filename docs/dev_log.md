@@ -30,6 +30,24 @@ LootSimlator is ...
 ```
 
 - omni wrapper for Query.Item.TOOLBOX, Query.ItemName.TOOLBOX, Query.Monster.loot, Query.Random, etc
+```
+desired wrapper access
+        Query.Item.TOOLBOX
+        Query.Item.random
+
+        Query.ItemName.random
+
+        Query.Monster.GOBLIN
+        Query.Monster.random
+
+        Query.Tag.TOOLBOX
+
+```
+- *Resolve* - Health
+- *Sanity*  - Stamina
+- *Essence* - Mana
+
+- `Berserker` - you no longer lose sanity (maybe heal) but most merchants won't interact with you
 
 ## Dependencies
 - Pytest
