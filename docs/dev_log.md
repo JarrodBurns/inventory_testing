@@ -112,3 +112,34 @@ desired wrapper access
 - There isn't a model for `ItemName` (This may be fine, I can't decide)
 - `creature` and `monster` violate naming consistency between models and objects
 - `materials` and `composition` violate naming consistency between models and objects
+- A call like `ItemManager.Item.model.get_fm_name(session, name) is possible` make private?
+
+# 2
+
+1. Enemy
+    - LootTable
+        - name
+        - loot
+        - weights
+
+    - Inventory
+        - Currency
+        - Items
+        - Materials
+
+## Enums
+- EnemyName
+- ItemName
+- TagName
+
+
+## LootTable
+
+### name
+- Identifier for the loot table. Should be an `EnemyName`
+
+### loot
+- list of `ItemName` and or `Tag` used to derive an enemies loot by random choice
+
+### weights
+- choice weights for comparison against the `loot` 
