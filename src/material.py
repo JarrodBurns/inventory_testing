@@ -1,6 +1,6 @@
 
 from dataclasses import dataclass
-from typing import List, Union
+from typing import Union
 
 from enums import MaterialType, Quality
 
@@ -106,51 +106,5 @@ class Material:
         raise TypeError(f"Unsupported operand type(s) for /: 'Material' and '{type(other)}'")
 
 
-MATERIALS = {
-    MaterialType.ALUMINUM   : Material(MaterialType.ALUMINUM, Quality.COMMON),
-    MaterialType.BONE       : Material(MaterialType.BONE, Quality.COMMON),
-    MaterialType.BRASS      : Material(MaterialType.BRASS, Quality.COMMON),
-    MaterialType.BRONZE     : Material(MaterialType.BRONZE, Quality.COMMON),
-    MaterialType.COPPER     : Material(MaterialType.COPPER, Quality.COMMON),
-    MaterialType.CORK       : Material(MaterialType.CORK, Quality.COMMON),
-    MaterialType.ESSENCE    : Material(MaterialType.ESSENCE, Quality.UNCOMMON),
-    MaterialType.GLASS      : Material(MaterialType.GLASS, Quality.COMMON),
-    MaterialType.GRAPHITE   : Material(MaterialType.GRAPHITE, Quality.COMMON),
-    MaterialType.FIBER      : Material(MaterialType.FIBER, Quality.COMMON),
-    MaterialType.FLINT      : Material(MaterialType.FLINT, Quality.COMMON),
-    MaterialType.INK        : Material(MaterialType.INK, Quality.COMMON),
-    MaterialType.IRON       : Material(MaterialType.IRON, Quality.COMMON),
-    MaterialType.JADE       : Material(MaterialType.JADE, Quality.COMMON),
-    MaterialType.ORGANIC    : Material(MaterialType.ORGANIC, Quality.COMMON),
-    MaterialType.PAPER      : Material(MaterialType.PAPER, Quality.COMMON),
-    MaterialType.PLASTIC    : Material(MaterialType.PLASTIC, Quality.COMMON),
-    MaterialType.POISON     : Material(MaterialType.POISON, Quality.UNCOMMON),
-    MaterialType.RUBBER     : Material(MaterialType.RUBBER, Quality.COMMON),
-    MaterialType.SILVER     : Material(MaterialType.SILVER, Quality.COMMON),
-    MaterialType.SPIDER_SILK: Material(MaterialType.SPIDER_SILK, Quality.UNCOMMON),
-    MaterialType.STONE      : Material(MaterialType.STONE, Quality.COMMON),
-    MaterialType.STEEL      : Material(MaterialType.STEEL, Quality.UNCOMMON),
-    MaterialType.WOOD       : Material(MaterialType.WOOD, Quality.COMMON),
-
-}
-
-
-def select_materials_by_quality(quality: Quality) -> List[Material]:
-    return [material for material in MATERIALS.values() if material.quality == quality]
-
-
 if __name__ == '__main__':
-
-    import _CopyToClipBoard
-
-    name = "test"
-    quality = "common"
-    # name = []
-    # quality = []
-
-    # _CopyToClipBoard.materials(name, quality)
-    # _CopyToClipBoard.material_type(name)
-
-    # print(MATERIALS[MaterialType.BONE].name)
-    # mats = [MATERIALS[m] for m in [MaterialType.STEEL, MaterialType.WOOD]]
-    # print(type(mats))
+    ...

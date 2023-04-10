@@ -1,12 +1,40 @@
 
-# from _db_models import ItemModel, MaterialModel, QualityModel, TagModel
-from enums import Tag, ItemName, Quality
-from material import MaterialType, MATERIALS
+from enums import Tag, ItemName, MaterialType, Monster, Quality
+from material import Material
 from item import Item
+from loot import LootTable
 
 
-ITEMS = (
-    Item(
+MATERIALS = {
+    MaterialType.ALUMINUM       : Material(MaterialType.ALUMINUM, Quality.COMMON),
+    MaterialType.BONE           : Material(MaterialType.BONE, Quality.COMMON),
+    MaterialType.BRASS          : Material(MaterialType.BRASS, Quality.COMMON),
+    MaterialType.BRONZE         : Material(MaterialType.BRONZE, Quality.COMMON),
+    MaterialType.COPPER         : Material(MaterialType.COPPER, Quality.COMMON),
+    MaterialType.CORK           : Material(MaterialType.CORK, Quality.COMMON),
+    MaterialType.ESSENCE        : Material(MaterialType.ESSENCE, Quality.UNCOMMON),
+    MaterialType.GLASS          : Material(MaterialType.GLASS, Quality.COMMON),
+    MaterialType.GRAPHITE       : Material(MaterialType.GRAPHITE, Quality.COMMON),
+    MaterialType.FIBER          : Material(MaterialType.FIBER, Quality.COMMON),
+    MaterialType.FLINT          : Material(MaterialType.FLINT, Quality.COMMON),
+    MaterialType.INK            : Material(MaterialType.INK, Quality.COMMON),
+    MaterialType.IRON           : Material(MaterialType.IRON, Quality.COMMON),
+    MaterialType.JADE           : Material(MaterialType.JADE, Quality.COMMON),
+    MaterialType.ORGANIC        : Material(MaterialType.ORGANIC, Quality.COMMON),
+    MaterialType.PAPER          : Material(MaterialType.PAPER, Quality.COMMON),
+    MaterialType.PLASTIC        : Material(MaterialType.PLASTIC, Quality.COMMON),
+    MaterialType.POISON         : Material(MaterialType.POISON, Quality.UNCOMMON),
+    MaterialType.RUBBER         : Material(MaterialType.RUBBER, Quality.COMMON),
+    MaterialType.SILVER         : Material(MaterialType.SILVER, Quality.COMMON),
+    MaterialType.SPIDER_SILK    : Material(MaterialType.SPIDER_SILK, Quality.UNCOMMON),
+    MaterialType.STONE          : Material(MaterialType.STONE, Quality.COMMON),
+    MaterialType.STEEL          : Material(MaterialType.STEEL, Quality.UNCOMMON),
+    MaterialType.WOOD           : Material(MaterialType.WOOD, Quality.COMMON),
+
+}
+
+ITEMS = {
+    ItemName.BOTTLE_CAP         : Item(
         name=ItemName.BOTTLE_CAP,
         weight=1,
         value=5,
@@ -17,7 +45,7 @@ ITEMS = (
         craftable=False,
         flavor_text="This bottle cap has seen better days, with scratches and dents all over its surface. The logo on the top is so faded that it's hard to make out what it used to be."
     ),
-    Item(
+    ItemName.BRASS_BUTTON       : Item(
         name=ItemName.BRASS_BUTTON,
         weight=2,
         value=25,
@@ -28,7 +56,7 @@ ITEMS = (
         craftable=True,
         flavor_text="This button is a simple and practical accessory that can be used to add a finishing touch to any piece of clothing."
     ),
-    Item(
+    ItemName.DULL_TOOTH         : Item(
         name=ItemName.DULL_TOOTH,
         weight=5,
         value=10,
@@ -39,7 +67,7 @@ ITEMS = (
         craftable=False,
         flavor_text="This tooth is so worn and useless that you might as well just throw it away."
     ),
-    Item(
+    ItemName.FLINT              : Item(
         name=ItemName.FLINT,
         weight=10,
         value=50,
@@ -50,7 +78,7 @@ ITEMS = (
         craftable=False,
         flavor_text="This piece of flint is well-suited for starting fires or making tools in a pinch."
     ),
-    Item(
+    ItemName.HAMMER             : Item(
         name=ItemName.HAMMER,
         weight=600,
         value=8_000,
@@ -61,7 +89,7 @@ ITEMS = (
         craftable=True,
         flavor_text="This hammer has seen a lot of use, but it still has plenty of life left in it. The wooden handle is worn and smooth from years of hard work, but it still provides a comfortable grip. The steel head is dinged and scratched from pounding nails and shaping metal, but it still delivers a solid blow. Whether you're building a house or just hanging a picture frame, this hammer is up to the task."
     ),
-    Item(
+    ItemName.INKWELL            : Item(
         name=ItemName.INKWELL,
         weight=50,
         value=500,
@@ -72,7 +100,7 @@ ITEMS = (
         craftable=True,
         flavor_text="TODO"
     ),
-    Item(
+    ItemName.MEASURING_STICK    : Item(
         name=ItemName.MEASURING_STICK,
         weight=250,
         value=500,
@@ -83,7 +111,7 @@ ITEMS = (
         craftable=True,
         flavor_text="This measuring stick has been passed down through generations of carpenters, and has been used to build everything from houses to furniture. Made from solid wood, it is marked with precise measurements and has a smooth finish that makes it easy to handle. Whether you're building a bookshelf or measuring out a room, this measuring stick is a reliable tool that will never let you down."
     ),
-    Item(
+    ItemName.NAIL               : Item(
         name=ItemName.NAIL,
         weight=3,
         value=15,
@@ -94,7 +122,7 @@ ITEMS = (
         craftable=True,
         flavor_text="This nail is a simple and reliable tool that can be used for a variety of construction projects."
     ),
-    Item(
+    ItemName.PENCIL             : Item(
         name=ItemName.PENCIL,
         weight=8,  # grams
         value=25,  # pennies
@@ -105,7 +133,7 @@ ITEMS = (
         craftable=True,
         flavor_text="Get to the point..."
     ),
-    Item(
+    ItemName.PLIERS             : Item(
         name=ItemName.PLIERS,
         weight=150,
         value=10_000,
@@ -116,7 +144,7 @@ ITEMS = (
         craftable=True,
         flavor_text="These pliers have been through a lot, but they still get the job done. The rubber grip is worn, but it still provides a comfortable hold. The serrated jaws show signs of wear and tear, but they can still grip tightly and manipulate objects with ease. Whether you're working on a mechanical project or just need to tighten a bolt, these trusty pliers are up to the task."
     ),
-    Item(
+    ItemName.RUSTY_NAIL         : Item(
         name=ItemName.RUSTY_NAIL,
         weight=3,
         value=5,
@@ -127,7 +155,7 @@ ITEMS = (
         craftable=False,
         flavor_text="This nail is so rusty and corroded that it would likely break if you tried to use it for anything."
     ),
-    Item(
+    ItemName.SAW                : Item(
         name=ItemName.SAW,
         weight=400,  # grams
         value=12_000,  # pennies
@@ -138,7 +166,7 @@ ITEMS = (
         craftable=True,
         flavor_text="This saw is a reliable tool for any cutting job. The steel blade is sharp and durable, and the wooden handle provides a comfortable grip. Whether you're cutting through a thick piece of wood or making precise cuts in metal, this saw will get the job done."
     ),
-    Item(
+    ItemName.TOOLBOX            : Item(
         name=ItemName.TOOLBOX,
         weight=3_000,
         value=50_000,
@@ -149,7 +177,7 @@ ITEMS = (
         craftable=True,
         flavor_text="This toolbox is a great way to keep your tools organized and easily accessible. The steel body is sturdy and durable, and the ergonomic handle makes it easy to carry. With plenty of compartments and storage space, you can keep all your tools neatly arranged and ready for use."
     ),
-    Item(
+    ItemName.TRASH              : Item(
         name=ItemName.TRASH,
         weight=10,
         value=0,
@@ -162,7 +190,7 @@ ITEMS = (
     ),
 
     # Treasure
-    Item(
+    ItemName.GOBLET_OF_BRASS    : Item(
         name=ItemName.GOBLET_OF_BRASS,
         weight=13,
         value=1_800,
@@ -173,7 +201,7 @@ ITEMS = (
         craftable=True,
         flavor_text="Despite its modest appearance, this goblet has likely seen many a raucous goblin feast."
     ),
-    Item(
+    ItemName.SILVER_TOOTH_PICK  : Item(
         name=ItemName.SILVER_TOOTH_PICK,
         weight=1,
         value=5_400,
@@ -184,7 +212,7 @@ ITEMS = (
         craftable=True,
         flavor_text="This toothpick may seem like a small and unremarkable item, but its craftsmanship is surprisingly delicate."
     ),
-    Item(
+    ItemName.JADE_EARRING       : Item(
         name=ItemName.JADE_EARRING,
         weight=8,
         value=8_000,
@@ -195,7 +223,7 @@ ITEMS = (
         craftable=True,
         flavor_text="This earring may have once belonged to a goblin of high status, or perhaps it was stolen from a human traveler."
     ),
-    Item(
+    ItemName.COPPER_KETTLE      : Item(
         name=ItemName.COPPER_KETTLE,
         weight=900,
         value=3_100,
@@ -206,7 +234,7 @@ ITEMS = (
         craftable=True,
         flavor_text="Despite its dents and scratches, this kettle still seems to function well enough for its intended purpose."
     ),
-    Item(
+    ItemName.BRONZE_MIRROR      : Item(
         name=ItemName.BRONZE_MIRROR,
         weight=2_300,
         value=9_200,
@@ -218,8 +246,8 @@ ITEMS = (
         flavor_text="This mirror may have been stolen from a human's vanity, or perhaps it was a treasured possession of a particularly vain goblin."
     ),
 
-    # Unsorted... TODO Make a script to alphabetize these things.
-    Item(
+    # Unsorted... TODO: Make a script to alphabetize these things.
+    ItemName.WOVEN_BASKET       : Item(
         name=ItemName.WOVEN_BASKET,
         weight=1_150,
         value=2_000,
@@ -230,7 +258,7 @@ ITEMS = (
         craftable=True,
         flavor_text="The intricate weaving of this basket shows the skilled craftsmanship of the one who made it."
     ),
-    Item(
+    ItemName.SPIDER_SILK_ROPE   : Item(
         name=ItemName.SPIDER_SILK_ROPE,
         weight=250,
         value=7_500,
@@ -241,7 +269,7 @@ ITEMS = (
         craftable=True,
         flavor_text="The silk from a giant spider is not only valuable, but also incredibly useful. This rope is strong enough to hold up even the heaviest of adventurers."
     ),
-    Item(
+    ItemName.TOXIC_MUSHROOM     : Item(
         name=ItemName.TOXIC_MUSHROOM,
         weight=8,
         value=400,
@@ -252,7 +280,7 @@ ITEMS = (
         craftable=False,
         flavor_text="While this mushroom may not be edible, it can be used to create a potent poison."
     ),
-    Item(
+    ItemName.RUNED_STONE        : Item(
         name=ItemName.RUNED_STONE,
         weight=450,
         value=9_500,
@@ -263,7 +291,7 @@ ITEMS = (
         craftable=False,
         flavor_text="Legend has it that this stone was imbued with powerful magic by a great goblin wizard."
     ),
-    Item(
+    ItemName.SMOKED_FISH        : Item(
         name=ItemName.SMOKED_FISH,
         weight=75,
         value=800,
@@ -274,4 +302,78 @@ ITEMS = (
         craftable=True,
         flavor_text="This fish may not be fancy, but it's a reliable source of food for goblins on the go."
     ),
-)
+
+}
+
+LOOT_TABLES = {
+    Monster.GOBLIN              : LootTable(
+        creature=Monster.GOBLIN,
+        weights=[1, 2, 7, 15, 15, 60],
+        all_loot=[
+            ItemName.TOOLBOX,
+            Tag.TREASURE,
+            Tag.TOOL,
+            Tag.DECORATION,
+            Tag.CLOTHING,
+            Tag.JUNK
+        ]
+    ),
+    Monster.TROLL               : LootTable(
+        creature=Monster.TROLL,
+        weights=[4, 10, 15, 15, 20, 36],
+        all_loot=[
+            Tag.TREASURE,
+            ItemName.TOOLBOX,
+            Tag.DECORATION,
+            Tag.CLOTHING,
+            Tag.TOOL,
+            Tag.JUNK
+        ]
+    ),
+    Monster.OGRE                : LootTable(
+        creature=Monster.OGRE,
+        weights=[2, 8, 15, 20, 30, 25],
+        all_loot=[
+            Tag.TREASURE,
+            Tag.TOOL,
+            Tag.CLOTHING,
+            Tag.DECORATION,
+            Tag.JUNK,
+            Tag.FOOD,
+        ]
+    ),
+    Monster.GIANT_SPIDER        : LootTable(
+        creature=Monster.GIANT_SPIDER,
+        weights=[2, 10, 20, 25, 30, 13],
+        all_loot=[
+            Tag.TREASURE,
+            Tag.WEAVING,
+            Tag.CLOTHING,
+            Tag.DECORATION,
+            Tag.JUNK,
+            Tag.POISON,
+        ]
+    ),
+    Monster.GOBLIN_SHAMAN       : LootTable(
+        creature=Monster.GOBLIN_SHAMAN,
+        weights=[5, 10, 20, 25, 25, 15],
+        all_loot=[
+            Tag.TREASURE,
+            Tag.CLOTHING,
+            Tag.MAGIC,
+            Tag.DECORATION,
+            Tag.TOOL,
+            Tag.JUNK,
+        ]
+    ),
+
+}
+
+if __name__ == '__main__':
+
+    import _CopyToClipBoard
+
+    name = "test"
+    quality = "common"
+    # name = []
+    # quality = []

@@ -1,14 +1,12 @@
 
-import json
-from typing import List, Optional, Union
+from typing import List
 
 from sqlalchemy import Boolean, Column, ForeignKey, func, Integer, JSON, String, Table
 from sqlalchemy.orm import joinedload, Query, relationship, selectinload, Session
 
 from _db_utils import session_scope, SingletonModelBase
-from enums import ItemName, MaterialType, Monster, Quality, Tag
-from item import Item
-from loot import LootTable
+from enums import MaterialType, Monster, Quality, Tag
+
 from material import Material
 
 
@@ -107,24 +105,6 @@ class ItemModel(ModelBase, QueryBase):
     def __repr__(self):
         return f"ItemModel(id={self.id}, name='{self.name}', weight={self.weight}, value={self.value}, description='{self.description}', quality_id={self.quality_id}, craftable={self.craftable})"
 
-    @property
-    def as_item(self) -> Item:
-        return Item(
-            name=ItemName(self.name),
-            weight=self.weight,
-            value=self.value,
-            description=self.description,
-            quality=Quality(self.quality.name),
-            craftable=self.craftable,
-            composition=[Material(MaterialType(m.name), Quality(m.quality.name)) for m in self.materials],
-            tags=[Tag(t.name) for t in self.tags],
-            flavor_text=self.flavor_text
-        )
-
-    @property
-    def as_itemname(self) -> ItemName:
-        return ItemName(self.name)
-
     @classmethod
     def get_fm_materialtype_random(cls, session: Session, material_type: MaterialType) -> Query["ItemModel"]:
         return (
@@ -208,27 +188,6 @@ class LootTableModel(ModelBase, QueryBase):
     def __repr__(self):
         return f"LootTableModel(id={self.id}, weights={self.weights}, all_loot={self.all_loot}, monster_id={self.monster_id})"
 
-    @staticmethod
-    def _item_or_tag_helper(all_loot: List[str]) -> List[Union[ItemName, Tag]]:
-        all_out = []
-
-        for loot in all_loot:
-            try:
-                out = ItemName(loot)
-            except ValueError:
-                out = Tag(loot)
-            all_out.append(out)
-
-        return all_out
-
-    @property
-    def as_loottable(self) -> LootTable:
-        return LootTable(
-            creature=Monster(self.monster.name),
-            weights=json.loads(self.weights),
-            all_loot=self._item_or_tag_helper(json.loads(self.all_loot))
-        )
-
     @classmethod
     def get_fm_name(cls, session, monster: Monster) -> Query["LootTableModel"]:
         return (
@@ -256,6 +215,7 @@ if __name__ == '__main__':
 
     with session_scope() as session:
         ...
+        from enums import ItemName
 
         # QueryBase ==============================================================
         # print(QualityModel.get_fm_name(session, Quality.COMMON))
@@ -265,32 +225,32 @@ if __name__ == '__main__':
 
         # QualityModel ==============================================================
         # print(QualityModel.get_fm_name(session, Quality.POOR).as_quality)
-        # print(QualityModel.get_fm_random(session).as_quality)
+        # print(QualityModel.get_fm_random(session))
 
         # TagModel ==============================================================
-        # print(TagModel.get_fm_name(session, Tag.JUNK).as_tag)
-        # print(TagModel.get_fm_random(session).as_tag)
+        # print(TagModel.get_fm_name(session, Tag.JUNK))
+        # print(TagModel.get_fm_random(session))
 
         # MaterialModel ==========================================================
-        # print(MaterialModel.get_fm_name(session, MaterialType.BONE).as_material)
-        # print(MaterialModel.get_fm_random(session).as_material)
-        # print(*[m.as_material for m in MaterialModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
+        # print(MaterialModel.get_fm_name(session, MaterialType.BONE))
+        # print(MaterialModel.get_fm_random(session))
+        # print(*[m for m in MaterialModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
 
         # ItemModel ==============================================================
-        # print(ItemModel.get_fm_name(session, ItemName.TRASH).as_itemname)
-        # print(ItemModel.get_fm_name(session, ItemName.TRASH).as_item.ascii_art())
-        # print(ItemModel.get_fm_materialtype_random(session, MaterialType.WOOD).as_item.ascii_art())
-        # print(ItemModel.get_fm_quality_random(session, Quality.UNCOMMON).as_item.ascii_art())
-        # print(ItemModel.get_fm_random(session).as_item.ascii_art())
-        # print(ItemModel.get_fm_tag_random(session, Tag.JUNK).as_item.ascii_art())
-        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_materialtype(session, MaterialType.BRASS)], sep='\n')
-        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
-        # print(*[i.as_item.ascii_art() for i in ItemModel.gets_fm_tag(session, Tag.TREASURE)], sep='\n')
+        # print(ItemModel.get_fm_name(session, ItemName.TRASH))
+        # print(ItemModel.get_fm_name(session, ItemName.TRASH))
+        # print(ItemModel.get_fm_materialtype_random(session, MaterialType.WOOD))
+        # print(ItemModel.get_fm_quality_random(session, Quality.UNCOMMON))
+        # print(ItemModel.get_fm_random(session))
+        # print(ItemModel.get_fm_tag_random(session, Tag.JUNK))
+        # print(*[i for i in ItemModel.gets_fm_materialtype(session, MaterialType.BRASS)], sep='\n')
+        # print(*[i for i in ItemModel.gets_fm_quality(session, Quality.UNCOMMON)], sep='\n')
+        # print(*[i for i in ItemModel.gets_fm_tag(session, Tag.TREASURE)], sep='\n')
 
         # MonsterModel ===========================================================
         # print(MonsterModel.get_fm_name(session, Monster.GOBLIN).as_monster)
         # print(MonsterModel.get_fm_random(session).as_monster)
 
         # LootTableModel =========================================================
-        # print(LootTableModel.get_fm_name(session, Monster.GOBLIN).as_loottable)
-        # print(LootTableModel.get_fm_random(session).as_loottable)
+        # print(LootTableModel.get_fm_name(session, Monster.GOBLIN))
+        # print(LootTableModel.get_fm_random(session))

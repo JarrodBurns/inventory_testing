@@ -1,11 +1,9 @@
 
 import json
 
-from _db_entries import ITEMS
+from _db_entries import ITEMS, LOOT_TABLES, MATERIALS
 from _db_utils import ENGINE, session_scope, SingletonModelBase
 from enums import Monster, Quality, Tag
-from loot import LOOT_TABLES
-from material import MATERIALS
 
 
 import _db_models as db
@@ -41,7 +39,7 @@ def CREATE_DATABASE():
             )
             session.add(m)
 
-        for item in ITEMS:
+        for item in ITEMS.values():
             i = db.ItemModel(
                 name=item.name,
                 weight=item.weight,

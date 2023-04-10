@@ -1,12 +1,11 @@
 
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import List
 import random
 
-from access_wrapper import AccessWrapper
 from enums import ItemName, Monster, Tag
 from inventory import Inventory
-from item import ItemManager
+from item_manager import ItemManager
 
 
 @dataclass(frozen=True)
@@ -25,13 +24,13 @@ class LootTable:
     @property
     def loot(self) -> ItemName:
 
-        random_item = random.choices(self.all_loot, weights=self.weights)[0]
+        choice = random.choices(self.all_loot, weights=self.weights)[0]
 
-        if isinstance(random_item, Tag):
-            return ItemManager.get_random_item_name_fm_tag(random_item)
+        if isinstance(choice, Tag):
+            return ItemManager.get_fm_tag_random(choice).name
 
-        if isinstance(random_item, ItemName):
-            return random_item
+        if isinstance(choice, ItemName):
+            return choice
 
     @property
     def creature_value(self) -> int:
@@ -40,12 +39,12 @@ class LootTable:
         for loot in self.all_loot:
 
             if isinstance(loot, Tag):
-                value += ItemManager.get_random_item_fm_tag(loot).value
+                value += ItemManager.get_fm_tag_random(loot).value
 
             if isinstance(loot, ItemName):
-                value += ItemManager.get_item_fm_name(loot).value
+                value += ItemManager.Item.get_fm_name(loot).value
 
-        return value // 100
+        return value // 1000
 
     @property
     def inventory(self) -> Inventory:
@@ -64,119 +63,5 @@ class LootTable:
         return _inventory
 
 
-LOOT_TABLES = {
-    Monster.GOBLIN: LootTable(
-        creature=Monster.GOBLIN,
-        weights=[1, 2, 7, 15, 15, 60],
-        all_loot=[
-            ItemName.TOOLBOX,
-            Tag.TREASURE,
-            Tag.TOOL,
-            Tag.DECORATION,
-            Tag.CLOTHING,
-            Tag.JUNK
-        ]
-    ),
-    Monster.TROLL: LootTable(
-        creature=Monster.TROLL,
-        weights=[4, 10, 15, 15, 20, 36],
-        all_loot=[
-            Tag.TREASURE,
-            ItemName.TOOLBOX,
-            Tag.DECORATION,
-            Tag.CLOTHING,
-            Tag.TOOL,
-            Tag.JUNK
-        ]
-    ),
-    Monster.OGRE: LootTable(
-        creature=Monster.OGRE,
-        weights=[2, 8, 15, 20, 30, 25],
-        all_loot=[
-            Tag.TREASURE,
-            Tag.TOOL,
-            Tag.CLOTHING,
-            Tag.DECORATION,
-            Tag.JUNK,
-            Tag.FOOD,
-        ]
-    ),
-    Monster.GIANT_SPIDER: LootTable(
-        creature=Monster.GIANT_SPIDER,
-        weights=[2, 10, 20, 25, 30, 13],
-        all_loot=[
-            Tag.TREASURE,
-            Tag.WEAVING,
-            Tag.CLOTHING,
-            Tag.DECORATION,
-            Tag.JUNK,
-            Tag.POISON,
-        ]
-    ),
-    Monster.GOBLIN_SHAMAN: LootTable(
-        creature=Monster.GOBLIN_SHAMAN,
-        weights=[5, 10, 20, 25, 25, 15],
-        all_loot=[
-            Tag.TREASURE,
-            Tag.CLOTHING,
-            Tag.MAGIC,
-            Tag.DECORATION,
-            Tag.TOOL,
-            Tag.JUNK,
-        ]
-    ),
-}
-
-
-class LootManager:
-    LOOT_TABLES: Dict[Monster, LootTable] = LOOT_TABLES
-    Tables: AccessWrapper = AccessWrapper(LOOT_TABLES, Monster)
-
-    @classmethod
-    def get_loot_table_fm_monster_name(cls, creature: Monster) -> LootTable:
-        return cls.LOOT_TABLES[creature]
-
-    @classmethod
-    def get_random_loot_table(cls) -> LootTable:
-        return cls.LOOT_TABLES[random.choice(list(Monster))]
-
-    @classmethod
-    def get_random_loot_table_fm_tag(cls) -> LootTable:
-        raise NotImplementedError("Functionality not yet implemented")
-
-
 if __name__ == '__main__':
-    pass
-
-    # lt = LOOT_TABLES[Monster.GOBLIN]
-    # print(lt.creature_value)
-    # print(lt.all_loot)
-    # lt.loot
-
-    # print(LootManager.get_loot_table_fm_monster_name(Monster.GOBLIN))
-    # print(LootManager.get_random_loot_table())
-    # i = lt.encounter_by_level(5)
-
-    print(LootManager.Tables[Monster.GOBLIN].encounter_by_level(5))
-
-    # Monster.TROLL: LootTable(
-    #     creature=Monster.TROLL,
-    #     weights=[4, 10, 15, 15, 20, 36],
-    #     all_loot=[
-    #         Tag.TREASURE,
-    #         ItemName.TOOLBOX,
-    #         Tag.DECORATION,
-    #         Tag.CLOTHING,
-    #         Tag.TOOL,
-    #         Tag.JUNK
-    #     ]
-    # ),
-
-    # print(ItemManager.get_random_item_name_fm_tag(Tag.))
-
-    junk = ItemManager.TagIndex.JUNK
-    print(random.choice(junk))
-
-    all_loot = [ItemName.TOOLBOX, *junk]
-
-    print(all_loot)
+    ...

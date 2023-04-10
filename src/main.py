@@ -4,8 +4,11 @@ from typing import List, Optional
 import random
 
 from inventory import Inventory
-from item import ItemManager
-from loot import LootManager, Monster
+# from item import ItemManager
+# from loot import LootManager, Monster
+from enums import Monster
+from loot_manager import LootManager
+from item_manager import ItemManager
 
 
 @dataclass
@@ -70,4 +73,4 @@ if __name__ == '__main__':
     # Display the contents of the players inventory.
     print(player_inventory)
     for item in player_inventory.get_all_items():
-        print(ItemManager.get_item_fm_name(item).ascii_art())
+        print(ItemManager.Item.get_fm_name(item).ascii_art())

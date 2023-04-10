@@ -13,10 +13,10 @@ QueryType = TypeVar('QueryType', bound=QueryBase)
 
 class AccessWrapper:
 
-    def __init__(self, keys, model, access_property):
+    def __init__(self, keys, model, result_converter):
         self.keys               : Enum = keys  # TODO: Redundent?
         self.model              : Generic[ModelType, QueryType] = model
-        self.access_property    : str = access_property
+        self.result_converter = result_converter
 
     def __getattr__(self, name: Enum) -> object:
 
@@ -28,7 +28,7 @@ class AccessWrapper:
             if not (query := self.model.get_fm_name(session, _name)):
                 raise NoResultFound(f"Query '{name}' returned no results.")
 
-            return getattr(query, self.access_property)
+            return self.result_converter(query)
 
     def __getitem__(self, name: Enum) -> object:
 
@@ -40,7 +40,7 @@ class AccessWrapper:
             if not (query := self.model.get_fm_name(session, _name)):
                 raise NoResultFound(f"Query '{name}' returned no results.")
 
-            return getattr(query, self.access_property)
+            return self.result_converter(query)
 
     @property
     def random(self) -> object:
@@ -49,21 +49,29 @@ class AccessWrapper:
             if not (query := self.model.get_fm_random(session)):
                 raise NoResultFound(f"Query returned no results.")
 
-            return getattr(query, self.access_property)
+            return self.result_converter(query)
 
     @property
-    def all(self) -> List[object]:
+    def all_results(self) -> List[object]:
         with session_scope() as session:
 
             if not (query := self.model.gets_all(session)):
                 raise NoResultFound(f"Query returned no results.")
 
-            return [getattr(row, self.access_property) for row in query]
+            return [self.result_converter(row) for row in query]
 
-    def fm_id(self, id: int):
+    def get_fm_id(self, id: int) -> object:
         with session_scope() as session:
 
             if not (query := self.model.get_fm_id(session, id)):
                 raise NoResultFound(f"Query returned no results.")
 
-            return getattr(query, self.access_property)
+            return self.result_converter(query)
+
+    def get_fm_name(self, name: Enum) -> object:
+        with session_scope() as session:
+
+            if not (query := self.model.get_fm_name(session, name)):
+                raise NoResultFound(f"Query returned no results.")
+
+            return self.result_converter(query)
