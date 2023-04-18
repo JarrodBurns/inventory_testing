@@ -143,3 +143,14 @@ desired wrapper access
 
 ### weights
 - choice weights for comparison against the `loot` 
+
+## Text Blurbs for the Farm
+### Tome of Unspekable Horrors
+"The Tome of Unspeakable Horrors is a cursed book of black magic and eldritch knowledge. Its ancient pages are bound in human skin and inked in blood, containing rituals and spells that defy human comprehension. The whispers of long-forgotten gods and nameless abominations can be heard emanating from its pages, driving all but the strongest-willed mad with terror. The book's power is palpable, yet so is the evil that courses through its every word. Only the bravest and most foolish would dare to unlock the secrets within, for once the tome is opened, there is no going back."
+
+### Tome of Forbidden Knowledge
+You struggle to comprehend the arcane symbols and eldritch languages scrawled across the pages of this ancient tome. As you delve deeper, your mind races and your hands shake, as if unable to contain the unspeakable secrets contained within. Your eyes dart back and forth, searching for some shred of comprehension amidst the maddening chaos.
+
+Thoughts of madness and hysteria consume you, as you feel your grip on reality slipping away. The words on the pages seem to writhe and twist, forming hideous images in your mind's eye. And yet, you cannot look away. The knowledge contained within this cursed tome is too powerful, too tantalizing to ignore.
+
+In the end, you know that you will pay a terrible price for this knowledge. But for now, you cannot resist the lure of the forbidden, the dark secrets hidden within the pages of the Tome of Forbidden Knowledge.
